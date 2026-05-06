@@ -1,0 +1,12 @@
+{
+  "src/js/main.js": {
+    "file": "assets/ui-library-C8b3R4ep.js",
+    "name": "ui-library",
+    "src": "src/js/main.js",
+    "isEntry": true
+  },
+  "style.css": {
+    "file": "assets/style-HvJ-iQwJ.css",
+    "src": "style.css"
+  }
+}

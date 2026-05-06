@@ -1,0 +1,4 @@
+type: text
+label: HTML ID
+placeholder: my-section
+help: "Optional id='' attribute for the component's root element. Must be unique on the page. Use only letters, numbers, and hyphens."

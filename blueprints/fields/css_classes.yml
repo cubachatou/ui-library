@@ -1,0 +1,4 @@
+type: text
+label: Additional CSS Classes
+placeholder: "e.g. mt-lg bg-light is-featured"
+help: "Space-separated extra class names appended to the component's root element."

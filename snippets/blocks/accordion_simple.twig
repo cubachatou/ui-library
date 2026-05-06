@@ -1,0 +1,31 @@
+{#
+  accordion_simple.twig — Text-only accordion variant.
+
+  Overrides:
+    item_header  → plain title text.
+    item_content → standard prose wrapper.
+
+  To create a third variant: copy this file, rename it, change the blocks,
+  then add a new value to the blueprint's style select and handle it in
+  accordion.twig. No base template, JS, or SCSS needs to change.
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'accordion' %}
+{% set _extra_class = block.css_classes.value %}
+
+{% embed '@ui/_accordion_base.twig'
+	with {
+		items: block.items.toStructure(),
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class
+	}
+%}
+	{% block item_header %}
+		{{- item.title.value -}}
+	{% endblock %}
+	{% block item_content %}
+		<div class="accordion__content">
+			{{ item.content.kirbytext|raw }}
+		</div>
+	{% endblock %}
+{% endembed %}

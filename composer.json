@@ -1,0 +1,18 @@
+{
+  "name": "oleksii/kirby-ui-library",
+  "description": "Flexible UI component library plugin for Kirby CMS with Twig template inheritance and Vite asset pipeline.",
+  "type": "kirby-plugin",
+  "version": "0.1.0",
+  "license": "MIT",
+  "keywords": [
+    "kirby",
+    "kirby-plugin",
+    "kirby-cms",
+    "twig",
+    "ui-library",
+    "components"
+  ],
+  "require": {
+    "getkirby/composer-installer": "^1.0"
+  }
+}

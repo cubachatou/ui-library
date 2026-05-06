@@ -1,0 +1,45 @@
+{#
+  accordion_rich.twig — Accordion variant with optional header image and icon.
+
+  Overrides:
+    item_header  → optional <img>, title text, and a decorative inline icon.
+    item_content → extra wrapper div with BEM modifier for styled background.
+
+  The JS layer is completely unaware of this additional markup. It continues
+  to operate solely on [data-accordion-trigger] and [data-accordion-panel].
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'accordion' %}
+{% set _extra_class = block.css_classes.value %}
+
+{% embed '@ui/_accordion_base.twig'
+	with {
+		items: block.items.toStructure(),
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class ~ ' accordion--rich'
+	}
+%}
+	{% block item_header %}
+		{% set cover = item.image.toFile %}
+		{% if cover %}
+			<img class="accordion__image" src="{{ cover.url }}" alt="{{ cover.alt }}" width="{{ cover.width }}" height="{{ cover.height }}" loading="lazy" />
+		{% endif %}
+
+		<span class="accordion__trigger-label">{{ item.title.value }}</span>
+
+		<span class="accordion__icon" aria-hidden="true">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<circle cx="12" cy="12" r="10" />
+				<line x1="12" y1="8" x2="12" y2="16" />
+				<line x1="8" y1="12" x2="16" y2="12" />
+			</svg>
+		</span>
+	{% endblock %}
+	{% block item_content %}
+		<div class="accordion__content accordion__content--rich">
+			<div class="accordion__content-inner">
+				{{ item.content.kirbytext|raw }}
+			</div>
+		</div>
+	{% endblock %}
+{% endembed %}

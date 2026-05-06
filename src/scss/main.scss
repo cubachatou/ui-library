@@ -1,0 +1,8 @@
+// =============================================================================
+// main.scss — UI library entry point.
+//
+// Import one partial per component. Tokens are imported by each partial
+// individually so partials remain self-contained and portable.
+// =============================================================================
+
+@use 'accordion';

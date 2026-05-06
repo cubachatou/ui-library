@@ -1,0 +1,66 @@
+{#
+  _accordion_base.twig — Base accordion layout (internal partial).
+
+  Expected variables (passed via {% embed %} with {...}):
+    items       {StructureCollection}  Kirby structure items to iterate over.
+    wrapper_id  {string}               HTML id attribute for the root <div>.
+    extra_class {string}               Extra CSS classes appended to root element.
+
+  Overridable blocks:
+    {% block item_header %}  — Trigger button inner content (title, icon, image, …)
+    {% block item_content %} — Panel body content (prose, rich wrappers, …)
+
+  JS hook attributes (never remove or rename):
+    data-accordion          — Root element, targets the whole widget.
+    data-accordion-item     — Individual item wrapper.
+    data-accordion-trigger  — The <button> toggling aria-expanded.
+    data-accordion-panel    — The collapsible region.
+#}
+
+{% set _id    = wrapper_id  is defined and wrapper_id  ? wrapper_id  : 'accordion' %}
+{% set _extra = extra_class is defined and extra_class ? ' ' ~ extra_class : '' %}
+
+<div
+  class="accordion{{ _extra }}"
+  id="{{ _id }}"
+  data-accordion
+>
+  {% for item in items %}
+    {% set trigger_id = _id ~ '__trigger-' ~ loop.index %}
+    {% set panel_id   = _id ~ '__panel-'   ~ loop.index %}
+
+    <div class="accordion__item" data-accordion-item>
+
+      <div class="accordion__header">
+        <button
+          class="accordion__trigger"
+          id="{{ trigger_id }}"
+          type="button"
+          aria-expanded="{{ loop.first ? 'true' : 'false' }}"
+          aria-controls="{{ panel_id }}"
+          data-accordion-trigger
+        >
+          {% block item_header %}
+            {{ item.title.value }}
+          {% endblock %}
+        </button>
+      </div>
+
+      <div
+        class="accordion__body"
+        id="{{ panel_id }}"
+        role="region"
+        aria-labelledby="{{ trigger_id }}"
+        {% if not loop.first %}hidden{% endif %}
+        data-accordion-panel
+      >
+        {% block item_content %}
+          <div class="accordion__content">
+            {{ item.content.kirbytext | raw }}
+          </div>
+        {% endblock %}
+      </div>
+
+    </div>
+  {% endfor %}
+</div>

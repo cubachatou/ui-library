@@ -1,0 +1,62 @@
+title: Accordion
+icon: list-number
+preview: fields
+wysiwyg: true
+
+tabs:
+  content:
+    label: Content
+    fields:
+      items:
+        type: structure
+        label: Accordion Items
+        sortable: true
+        fields:
+          title:
+            type: text
+            label: Title
+            required: true
+            width: 1/2
+
+          image:
+            type: files
+            label: Image (rich style only)
+            max: 1
+            multiple: false
+            width: 1/2
+            help: "Optional header image, visible in the 'With Images' display style."
+
+          content:
+            type: writer
+            label: Content
+            required: true
+            marks:
+              - bold
+              - italic
+              - link
+            nodes:
+              - bulletList
+              - orderedList
+              - paragraph
+
+      style:
+        type: select
+        label: Display Style
+        default: simple
+        width: 1/2
+        options:
+          - value: simple
+            text: "Simple (text only)"
+          - value: with-images
+            text: "With Images"
+
+  settings:
+    label: Settings
+    fields:
+      html_id:
+        extends: fields/html_id
+        width: 1/2
+
+      css_classes:
+        extends: fields/css_classes
+        width: 1/2

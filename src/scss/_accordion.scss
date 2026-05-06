@@ -1,0 +1,171 @@
+// =============================================================================
+// _accordion.scss — BEM styles for the accordion component.
+//
+// Structure mirrors the HTML:
+//   .accordion
+//   └─ .accordion__item        (data-accordion-item)
+//      ├─ .accordion__header
+//      │  └─ .accordion__trigger  (data-accordion-trigger, <button>)
+//      │     ├─ .accordion__image        (rich variant, optional)
+//      │     ├─ .accordion__trigger-label
+//      │     └─ .accordion__icon         (rich variant)
+//      └─ .accordion__body    (data-accordion-panel)
+//         └─ .accordion__content
+//            └─ .accordion__content-inner  (rich variant)
+// =============================================================================
+
+@use 'tokens' as *;
+
+// ── Block ─────────────────────────────────────────────────────────────────────
+.accordion {
+  width: 100%;
+  border: $border-width solid $color-border;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  font-family: $font-family-base;
+
+  // ── Modifier: rich variant ─────────────────────────────────────────────────
+  &--rich {
+    .accordion__header {
+      background-color: $color-surface;
+    }
+
+    .accordion__body {
+      background-color: $color-surface-alt;
+    }
+  }
+
+  // ── Element: __item ────────────────────────────────────────────────────────
+  &__item {
+    border-bottom: $border-width solid $color-border;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  // ── Element: __header ──────────────────────────────────────────────────────
+  &__header {
+    display: flex;
+    align-items: stretch;
+    background-color: $color-surface;
+  }
+
+  // ── Element: __trigger ─────────────────────────────────────────────────────
+  &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-md;
+    width: 100%;
+    padding: $space-md $space-lg;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-text;
+    text-align: left;
+    transition:
+      background-color $transition-base,
+      color $transition-base;
+
+    &:hover {
+      background-color: $color-surface-alt;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-focus-ring;
+      outline-offset: -2px;
+    }
+
+    // Chevron icon injected via CSS — purely decorative, never a JS hook.
+    &::after {
+      content: '';
+      flex-shrink: 0;
+      width: 1.25em;
+      height: 1.25em;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      transition: transform $transition-base;
+    }
+
+    &[aria-expanded='true'] {
+      background-color: $color-surface-alt;
+
+      &::after {
+        transform: rotate(-180deg);
+      }
+    }
+  }
+
+  // ── Element: __trigger-label ───────────────────────────────────────────────
+  &__trigger-label {
+    flex: 1;
+  }
+
+  // ── Element: __icon (rich variant inline SVG) ──────────────────────────────
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: $color-text-muted;
+    transition:
+      color $transition-base,
+      transform $transition-base;
+
+    // Hide the inline icon when the chevron (::after) on the same trigger
+    // is already conveying the open/close state.
+    .accordion__trigger[aria-expanded='true'] & {
+      color: $color-focus-ring;
+      transform: rotate(45deg);
+    }
+  }
+
+  // ── Element: __body ────────────────────────────────────────────────────────
+  &__body {
+    overflow: hidden;
+
+    // Use the hidden attribute as the source of truth — keeps the toggle
+    // semantic and accessible. The JS sets/removes `hidden`; CSS hides it.
+    &[hidden] {
+      // `display: none` is the browser default for [hidden], but we make it
+      // explicit to ensure no other rule accidentally overrides visibility.
+      display: none;
+    }
+  }
+
+  // ── Element: __image ───────────────────────────────────────────────────────
+  &__image {
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    border-radius: $border-radius;
+    object-fit: cover;
+    margin-bottom: $space-sm;
+  }
+
+  // ── Element: __content ─────────────────────────────────────────────────────
+  &__content {
+    padding: $space-md $space-lg $space-lg;
+    font-size: $font-size-base;
+    color: $color-text;
+    line-height: $line-height-base;
+
+    // ── Modifier: rich variant adds extra visual weight ─────────────────────
+    &--rich {
+      padding-top: $space-lg;
+    }
+  }
+
+  // ── Element: __content-inner (rich variant only) ───────────────────────────
+  &__content-inner {
+    padding: $space-sm $space-md;
+    border-left: 3px solid $color-focus-ring;
+  }
+}
