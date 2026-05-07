@@ -6,12 +6,10 @@
 //   └─ .accordion__item        (data-accordion-item)
 //      ├─ .accordion__header
 //      │  └─ .accordion__trigger  (data-accordion-trigger, <button>)
-//      │     ├─ .accordion__image        (rich variant, optional)
-//      │     ├─ .accordion__trigger-label
-//      │     └─ .accordion__icon         (rich variant)
+//      │     └─ .accordion__trigger-label
 //      └─ .accordion__body    (data-accordion-panel)
-//         └─ .accordion__content
-//            └─ .accordion__content-inner  (rich variant)
+//         └─ .accordion__body-inner
+//            └─ .accordion__content
 // =============================================================================
 
 @use 'tokens' as *;
@@ -19,25 +17,22 @@
 // ── Block ─────────────────────────────────────────────────────────────────────
 .accordion {
   width: 100%;
-  border: $border-width solid $color-border;
-  border-radius: $border-radius-lg;
-  overflow: hidden;
   font-family: $font-family-base;
+  background-color: $color-readout-black;
+  color: $color-surface;
 
-  // ── Modifier: rich variant ─────────────────────────────────────────────────
-  &--rich {
-    .accordion__header {
-      background-color: $color-surface;
-    }
-
-    .accordion__body {
-      background-color: $color-surface-alt;
-    }
+  // ── Modifier: bordered variant ──────────────────────────────────────────
+  // Wraps the full component in a 1 px border with rounded corners.
+  // Apply via the css_classes field: accordion--bordered
+  &--bordered {
+    border: $border-width solid $color-text-muted;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
   }
 
   // ── Element: __item ────────────────────────────────────────────────────────
   &__item {
-    border-bottom: $border-width solid $color-border;
+    border-bottom: $border-width solid $color-text-muted;
 
     &:last-child {
       border-bottom: none;
@@ -48,7 +43,6 @@
   &__header {
     display: flex;
     align-items: stretch;
-    background-color: $color-surface;
   }
 
   // ── Element: __trigger ─────────────────────────────────────────────────────
@@ -65,19 +59,30 @@
     font-family: inherit;
     font-size: $font-size-base;
     font-weight: $font-weight-semibold;
-    color: $color-text;
+    color: $color-surface;
     text-align: left;
     transition:
-      background-color $transition-base,
+      text-decoration-color $transition-base,
       color $transition-base;
 
     &:hover {
-      background-color: $color-surface-alt;
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
     &:focus-visible {
       outline: 2px solid $color-focus-ring;
       outline-offset: -2px;
+    }
+
+    // Disabled state — still focusable for AT, but inert.
+    &[aria-disabled='true'] {
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      &:hover {
+        text-decoration: none;
+      }
     }
 
     // Chevron icon injected via CSS — purely decorative, never a JS hook.
@@ -94,8 +99,6 @@
     }
 
     &[aria-expanded='true'] {
-      background-color: $color-surface-alt;
-
       &::after {
         transform: rotate(-180deg);
       }
@@ -107,47 +110,33 @@
     flex: 1;
   }
 
-  // ── Element: __icon (rich variant inline SVG) ──────────────────────────────
-  &__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: $color-text-muted;
-    transition:
-      color $transition-base,
-      transform $transition-base;
-
-    // Hide the inline icon when the chevron (::after) on the same trigger
-    // is already conveying the open/close state.
-    .accordion__trigger[aria-expanded='true'] & {
-      color: $color-focus-ring;
-      transform: rotate(45deg);
-    }
-  }
-
   // ── Element: __body ────────────────────────────────────────────────────────
   &__body {
-    overflow: hidden;
+    // CSS grid trick: animates height from 0 → auto without JS measurement.
+    // grid-template-rows: 0fr collapses the inner to zero (min-height: 0);
+    // 1fr expands it to full natural height.
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows $transition-base;
 
-    // Use the hidden attribute as the source of truth — keeps the toggle
-    // semantic and accessible. The JS sets/removes `hidden`; CSS hides it.
+    &[data-state='open'] {
+      grid-template-rows: 1fr;
+    }
+
+    // No-JS / pre-init fallback: server renders first item without `hidden`,
+    // rest with `hidden`. JS removes `hidden` on init and switches to data-state.
+    // If JS never loads, all items with `hidden` stay hidden via browser default.
     &[hidden] {
-      // `display: none` is the browser default for [hidden], but we make it
-      // explicit to ensure no other rule accidentally overrides visibility.
       display: none;
     }
   }
 
-  // ── Element: __image ───────────────────────────────────────────────────────
-  &__image {
-    display: block;
-    width: 100%;
-    max-width: 480px;
-    height: auto;
-    border-radius: $border-radius;
-    object-fit: cover;
-    margin-bottom: $space-sm;
+  // ── Element: __body-inner ─────────────────────────────────────────────────
+  // Required sibling to __body for the grid-template-rows animation.
+  // overflow: hidden clips content at 0fr; min-height: 0 allows true collapse.
+  &__body-inner {
+    overflow: hidden;
+    min-height: 0;
   }
 
   // ── Element: __content ─────────────────────────────────────────────────────
@@ -156,16 +145,5 @@
     font-size: $font-size-base;
     color: $color-text;
     line-height: $line-height-base;
-
-    // ── Modifier: rich variant adds extra visual weight ─────────────────────
-    &--rich {
-      padding-top: $space-lg;
-    }
-  }
-
-  // ── Element: __content-inner (rich variant only) ───────────────────────────
-  &__content-inner {
-    padding: $space-sm $space-md;
-    border-left: 3px solid $color-focus-ring;
   }
 }

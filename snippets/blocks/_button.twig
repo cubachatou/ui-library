@@ -1,0 +1,66 @@
+{#
+  _button.twig — Button primitive (snippet partial, not a block).
+
+  Include this snippet wherever you need a button:
+    {% include '@ui/_button.twig' with { variant: 'outline', label: 'Cancel' } %}
+
+  Parameters:
+    variant      {string}  Variant class modifier. One of:
+                             default | destructive | outline | secondary | ghost | link
+                           Defaults to 'default'.
+    size         {string}  Size class modifier. One of:
+                             sm | default | lg | icon
+                           Defaults to 'default'. The 'icon' size is a square
+                           button for icon-only use — no visible label is rendered.
+    label        {string}  Visible button text.
+                           Required for all sizes except 'icon'.
+    type         {string}  HTML button type: button (default) | submit | reset
+    disabled     {bool}    Adds the disabled attribute and aria-disabled="true".
+                           Disabled buttons are non-interactive (pointer-events: none).
+    extra_class  {string}  Additional CSS classes appended to the root element.
+                           Use for one-off BEM modifiers or layout utilities.
+    attrs        {string}  Raw HTML attribute string appended as-is to the <button>.
+                           Required for icon-only buttons: attrs='aria-label="Close"'
+    icon_before  {string}  SVG or inline HTML rendered before the label.
+    icon_after   {string}  SVG or inline HTML rendered after the label.
+
+  Accessibility:
+    For size='icon' buttons (no visible label) you MUST supply an accessible
+    name via attrs, e.g. attrs='aria-label="Delete item"'. The snippet does
+    not inject a fallback label — a missing name produces an AT-inaccessible
+    button and will fail WCAG 2.1 SC 4.1.2.
+
+  The link variant is always rendered as <button type="button">, not <a href>.
+  If you need an anchor that looks like a link-button, apply the button classes
+  directly to your <a> element rather than using this snippet.
+#}
+
+{% set _variant     = variant     is defined and variant     ? variant     : 'default' %}
+{% set _size        = size        is defined and size        ? size        : 'default' %}
+{% set _type        = type        is defined and type        ? type        : 'button'  %}
+{% set _disabled    = disabled    is defined and disabled %}
+{% set _label       = label       is defined                 ? label       : ''        %}
+{% set _extra       = extra_class is defined and extra_class ? ' ' ~ extra_class : '' %}
+{% set _attrs       = attrs       is defined and attrs       ? attrs       : ''        %}
+{% set _icon_before = icon_before is defined and icon_before ? icon_before : ''        %}
+{% set _icon_after  = icon_after  is defined and icon_after  ? icon_after  : ''        %}
+
+{% set _size_mod = _size != 'default' ? ' button--' ~ _size : '' %}
+{% set _class    = 'button button--' ~ _variant ~ _size_mod ~ _extra %}
+
+<button
+	class="{{ _class }}"
+	type="{{ _type }}"
+	{%- if _disabled %} disabled aria-disabled="true"{% endif %}
+	{{- _attrs ? ' ' ~ _attrs|raw : '' -}}
+>
+	{%- if _icon_before -%}
+		<span class="button__icon button__icon--before" aria-hidden="true">{{ _icon_before|raw }}</span>
+	{%- endif -%}
+	{%- if _label -%}
+		<span class="button__label">{{ _label }}</span>
+	{%- endif -%}
+	{%- if _icon_after -%}
+		<span class="button__icon button__icon--after" aria-hidden="true">{{ _icon_after|raw }}</span>
+	{%- endif -%}
+</button>

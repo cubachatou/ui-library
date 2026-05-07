@@ -70,6 +70,7 @@ Kirby::plugin('ui-library/components', [
 
         // Block blueprints — each is selectable in any `type: blocks` field.
         'blocks/accordion'     => __DIR__ . '/blueprints/blocks/accordion.yml',
+        'blocks/button'        => __DIR__ . '/blueprints/blocks/button.yml',
     ],
 
     // ── Snippets ─────────────────────────────────────────────────────────────
@@ -83,6 +84,7 @@ Kirby::plugin('ui-library/components', [
     'snippets' => [
         // Block entry point — Kirby calls this automatically when rendering blocks.
         'blocks/accordion'        => __DIR__ . '/snippets/blocks/accordion.twig',
+        'blocks/button'           => __DIR__ . '/snippets/blocks/button.twig',
 
         // Variants — loaded by accordion.twig via {% include '@ui/…' %}.
         'blocks/accordion_simple' => __DIR__ . '/snippets/blocks/accordion_simple.twig',
@@ -92,8 +94,36 @@ Kirby::plugin('ui-library/components', [
         // The underscore prefix signals it is internal (not a public block).
         'blocks/_accordion_base'  => __DIR__ . '/snippets/blocks/_accordion_base.twig',
 
+        // Button primitive — snippet partial (not a block).
+        // Include via {% include '@ui/_button.twig' with { variant: '…', label: '…' } %}.
+        'blocks/_button'          => __DIR__ . '/snippets/blocks/_button.twig',
+
         // Asset loader — call snippet('ui-library/assets') in your layout <head>.
         'ui-library/assets'       => __DIR__ . '/snippets/ui-library/assets.php',
+    ],
+
+    // ── Panel sidebar areas ──────────────────────────────────────────────────
+    //
+    // Adds "Components" and "Snippets" as top-level entries in the panel sidebar,
+    // pointing directly at their respective content pages.
+
+    'areas' => [
+        'ui-components' => function () {
+            return [
+                'label' => 'Components',
+                'icon'  => 'box',
+                'menu'  => true,
+                'link'  => 'pages/components',
+            ];
+        },
+        'ui-snippets' => function () {
+            return [
+                'label' => 'Snippets',
+                'icon'  => 'code',
+                'menu'  => true,
+                'link'  => 'pages/snippets',
+            ];
+        },
     ],
 
     // ── Plugin-level options ─────────────────────────────────────────────────

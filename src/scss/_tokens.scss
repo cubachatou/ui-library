@@ -1,18 +1,40 @@
 // =============================================================================
 // _tokens.scss — Design tokens for the UI component library.
 //
+// Values are the single source of truth and match DESIGN.md exactly.
+// Token names use the style guide's semantic names where applicable.
+//
 // Import this file (not @forward-ed) into each component partial so that
 // component files are self-contained and tokens are not duplicated in output.
 // =============================================================================
 
 // ── Colors ───────────────────────────────────────────────────────────────────
-$color-surface: #ffffff;
-$color-surface-alt: #f8f8f8;
-$color-border: #d4d4d4;
-$color-text: #1a1a1a;
-$color-text-muted: #6b6b6b;
-$color-focus-ring: #0070f3;
-$color-focus-ring-alt: #003d99;
+// Five neutrals + one accessibility-functional accent. See DESIGN.md § 2.
+// Active Blue is infrastructure only — focus rings and rich-variant accents.
+// Never a background fill, never a call-to-action color, never decorative.
+
+$color-active-blue: #0070f3; // focus rings, rich content-inner rail
+$color-pressed-blue: #003d99; // high-contrast focus fallback (WCAG AA on white)
+$color-readout-black: #1a1a1a; // all body text and trigger labels
+$color-mid-register: #6b6b6b; // secondary/muted text, icon at rest
+$color-low-contrast-rule: #d4d4d4; // all borders — one weight, one color
+$color-quiet-paper: #f8f8f8; // alternate surface (hover, expanded, rich panels)
+$color-shell-white: #ffffff; // default component background
+
+// Semantic aliases — used throughout component partials.
+// Change a semantic alias here to retheme the whole library.
+$color-surface: $color-shell-white;
+$color-surface-alt: $color-quiet-paper;
+$color-border: $color-low-contrast-rule;
+$color-text: $color-readout-black;
+$color-text-muted: $color-mid-register;
+$color-focus-ring: $color-active-blue;
+$color-focus-ring-alt: $color-pressed-blue;
+
+// Semantic red for destructive actions (delete, irreversible operations).
+// Desaturated enough to not compete with Active Blue; readable on white.
+$color-destructive: #c53030;
+$color-destructive-hover: #a82828;
 
 // ── Spacing ───────────────────────────────────────────────────────────────────
 $space-xs: 0.25rem; //  4px
@@ -23,6 +45,9 @@ $space-xl: 2rem; // 32px
 $space-2xl: 3rem; // 48px
 
 // ── Typography ────────────────────────────────────────────────────────────────
+// System font only — no web fonts ever loaded (see DESIGN.md § 3 "No Web Font Rule").
+// Hierarchy is weight contrast (400 vs 600), not scale (see "Weight-Not-Scale Rule").
+
 $font-family-base:
   system-ui,
   -apple-system,
@@ -30,16 +55,22 @@ $font-family-base:
   'Segoe UI',
   Roboto,
   sans-serif;
-$font-size-sm: 0.875rem; // 14px
-$font-size-base: 1rem; // 16px
+
+$font-size-sm: 0.875rem; // 14px — small/supporting UI text
+$font-size-base: 1rem; // 16px — body and trigger labels share this size
 $font-size-lg: 1.125rem; // 18px
-$font-weight-normal: 400;
-$font-weight-semibold: 600;
+
+$font-weight-normal: 400; // body text
+$font-weight-semibold: 600; // trigger labels — weight-only hierarchy signal
+
 $line-height-base: 1.6;
 
 // ── Borders & Radii ───────────────────────────────────────────────────────────
+// No shadows anywhere in the library (see DESIGN.md § 4 "Flat-by-Default Rule").
+// Depth is expressed through border stack + one-step surface tint only.
+
 $border-width: 1px;
-$border-radius: 0.375rem; // 6px
+$border-radius-sm: 0.375rem; // 6px
 $border-radius-lg: 0.5rem; // 8px
 
 // ── Transitions ───────────────────────────────────────────────────────────────

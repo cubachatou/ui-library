@@ -18,37 +18,22 @@ tabs:
             required: true
             width: 1/2
 
-          image:
-            type: files
-            label: Image (rich style only)
-            max: 1
-            multiple: false
+          disabled:
+            type: toggle
+            label: Disabled
+            default: false
             width: 1/2
-            help: "Optional header image, visible in the 'With Images' display style."
+            help: "Prevent this item from being expanded or collapsed."
 
-          content:
-            type: writer
+          text:
+            type: blocks
             label: Content
             required: true
-            marks:
-              - bold
-              - italic
-              - link
-            nodes:
-              - bulletList
-              - orderedList
-              - paragraph
-
-      style:
-        type: select
-        label: Display Style
-        default: simple
-        width: 1/2
-        options:
-          - value: simple
-            text: "Simple (text only)"
-          - value: with-images
-            text: "With Images"
+            fieldsets:
+              - heading
+              - text
+              - list
+              - button
 
   settings:
     label: Settings
@@ -60,3 +45,10 @@ tabs:
       css_classes:
         extends: fields/css_classes
         width: 1/2
+
+      allow_multiple_open:
+        type: toggle
+        label: Allow Multiple Open
+        default: false
+        width: 1/2
+        help: "When enabled, multiple items can be expanded at the same time."

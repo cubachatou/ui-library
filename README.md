@@ -14,12 +14,12 @@ A flexible UI component library plugin for [Kirby CMS 5](https://getkirby.com) w
 
 ## Requirements
 
-| Dependency | Version |
-|---|---|
-| PHP | 8.2 – 8.5 |
-| Kirby CMS | ^5.2 |
-| [wearejust/kirby-twig](https://github.com/wearejust/kirby-twig) | ^5.0 |
-| Node.js *(dev only)* | 18+ |
+| Dependency                                                      | Version   |
+| --------------------------------------------------------------- | --------- |
+| PHP                                                             | 8.2 – 8.5 |
+| Kirby CMS                                                       | ^5.2      |
+| [wearejust/kirby-twig](https://github.com/wearejust/kirby-twig) | ^5.0      |
+| Node.js _(dev only)_                                            | 18+       |
 
 ## Installation
 
@@ -87,7 +87,7 @@ fields:
 
 ```twig
 {% if page.blocks.isNotEmpty %}
-    {{ page.blocks.toBlocks|raw }}
+	{{ page.blocks.toBlocks|raw }}
 {% endif %}
 ```
 
@@ -95,25 +95,25 @@ fields:
 
 Set the **Style** field in the Kirby Panel to switch variants:
 
-| Value | Template | Description |
-|---|---|---|
-| `simple` *(default)* | `accordion_simple.twig` | Title + rich-text content |
-| `with-images` | `accordion_rich.twig` | Header image + icon + title + content |
+| Value                | Template                | Description                           |
+| -------------------- | ----------------------- | ------------------------------------- |
+| `simple` _(default)_ | `accordion_simple.twig` | Title + rich-text content             |
+| `with-images`        | `accordion_rich.twig`   | Header image + icon + title + content |
 
 ### Custom JavaScript behaviour (Strategy hooks)
 
 ```js
-import { initAccordions } from '/path/to/accordion.js';
+import { initAccordions } from "/path/to/accordion.js";
 
 initAccordions({
-    allowMultipleOpen: true,
-    onOpen: (trigger, panel) => {
-        // e.g. fire analytics event, run custom animation
-        console.log('Opened:', trigger.textContent.trim());
-    },
-    onClose: (trigger, panel) => {
-        console.log('Closed:', trigger.textContent.trim());
-    },
+	allowMultipleOpen: true,
+	onOpen: (trigger, panel) => {
+		// e.g. fire analytics event, run custom animation
+		console.log("Opened:", trigger.textContent.trim());
+	},
+	onClose: (trigger, panel) => {
+		console.log("Closed:", trigger.textContent.trim());
+	},
 });
 ```
 

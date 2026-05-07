@@ -1,0 +1,60 @@
+title: Button
+icon: circle
+preview: fields
+wysiwyg: false
+
+fields:
+  label:
+    type: text
+    label: Label
+    required: true
+    width: 1/2
+
+  variant:
+    type: select
+    label: Variant
+    default: default
+    width: 1/2
+    options:
+      - { value: default, text: Default }
+      - { value: secondary, text: Secondary }
+      - { value: outline, text: Outline }
+      - { value: ghost, text: Ghost }
+      - { value: link, text: Link }
+      - { value: destructive, text: Destructive }
+
+  size:
+    type: select
+    label: Size
+    default: default
+    width: 1/2
+    options:
+      - { value: sm, text: Small (sm) }
+      - { value: default, text: Default }
+      - { value: lg, text: Large (lg) }
+
+  disabled:
+    type: toggle
+    label: Disabled
+    default: false
+    width: 1/2
+
+  extra_class:
+    type: text
+    label: Extra CSS classes
+    width: 1/2
+
+  attrs:
+    type: text
+    label: HTML attributes (e.g. aria-label="…")
+    width: 1/2
+
+  icon_before:
+    type: textarea
+    label: Icon before label (SVG markup)
+    width: 1/2
+
+  icon_after:
+    type: textarea
+    label: Icon after label (SVG markup)
+    width: 1/2

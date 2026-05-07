@@ -37,7 +37,7 @@ export class Accordion {
 		this.config = {
 			triggerSelector: "[data-accordion-trigger]",
 			panelSelector: "[data-accordion-panel]",
-			allowMultipleOpen: false,
+			allowMultipleOpen: root.hasAttribute("data-accordion-multiple"),
 			onOpen: null,
 			onClose: null,
 			...config,
@@ -52,6 +52,18 @@ export class Accordion {
 	 * @returns {Accordion}
 	 */
 	init() {
+		// Convert server-rendered hidden/visible panels to data-state so CSS
+		// can drive animation. The hidden attribute is removed here so the
+		// grid-template-rows transition can take over visibility control.
+		this.root.querySelectorAll(this.config.panelSelector).forEach((panel) => {
+			if (panel.hasAttribute("hidden")) {
+				panel.removeAttribute("hidden");
+				panel.dataset.state = "closed";
+			} else {
+				panel.dataset.state = "open";
+			}
+		});
+
 		this._getTriggers().forEach((trigger) => {
 			trigger.addEventListener("click", this._boundHandleClick);
 		});
@@ -77,6 +89,10 @@ export class Accordion {
 	/** @param {MouseEvent} event */
 	_handleClick(event) {
 		const trigger = /** @type {HTMLElement} */ (event.currentTarget);
+
+		// Honour aria-disabled — the trigger is focusable for AT but must not toggle.
+		if (trigger.getAttribute("aria-disabled") === "true") return;
+
 		const panelId = trigger.getAttribute("aria-controls");
 
 		if (!panelId) return;
@@ -104,6 +120,7 @@ export class Accordion {
 	 */
 	_open(trigger, panel) {
 		trigger.setAttribute("aria-expanded", "true");
+		panel.dataset.state = "open";
 		panel.removeAttribute("hidden");
 
 		if (typeof this.config.onOpen === "function") {
@@ -118,7 +135,7 @@ export class Accordion {
 	 */
 	_close(trigger, panel) {
 		trigger.setAttribute("aria-expanded", "false");
-		panel.setAttribute("hidden", "");
+		panel.dataset.state = "closed";
 
 		if (typeof this.config.onClose === "function") {
 			this.config.onClose(trigger, panel);

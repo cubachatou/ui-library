@@ -1,0 +1,24 @@
+{#
+  button.twig — Kirby block wrapper for the _button.twig snippet.
+
+  Panel fields map 1-to-1 with snippet parameters. This block lets the
+  button primitive be used anywhere a Kirby blocks field accepts it —
+  inside accordion items, doc demo fields, or any page body.
+
+  Parameters forwarded to _button.twig:
+    label       ← block.label
+    variant     ← block.variant  (default: 'default')
+    size        ← block.size     (default: 'default')
+    disabled    ← block.disabled (bool)
+    extra_class ← block.extra_class
+#}
+{% include '@ui/_button.twig' with {
+	variant: block.variant.value is not empty ? block.variant.value : 'default',
+	size: block.size.value is not empty ? block.size.value : 'default',
+	label: block.label.value,
+	disabled: block.disabled.isTrue,
+	extra_class: block.extra_class.value,
+	attrs: block.attrs.value,
+	icon_before: block.icon_before.value,
+	icon_after: block.icon_after.value
+} %}

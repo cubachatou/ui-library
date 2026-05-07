@@ -12,10 +12,4 @@
   No changes to _accordion_base.twig, accordion.js, or _accordion.scss.
 #}
 
-{% set style = block.style.value %}
-
-{% if style == 'with-images' %}
-	{% include '@ui/accordion_rich.twig' %}
-{% else %}
-	{% include '@ui/accordion_simple.twig' %}
-{% endif %}
+{% include '@ui/accordion_simple.twig' %}
