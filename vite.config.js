@@ -40,7 +40,7 @@ export default defineConfig(({ command }) => ({
 
 		rollupOptions: {
 			input: {
-				"kui": resolve(pluginRoot, "src/js/main.js"),
+				kui: resolve(pluginRoot, "src/js/main.js"),
 			},
 		},
 
