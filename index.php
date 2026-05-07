@@ -8,7 +8,7 @@
  *  - Block blueprints (accordion, …) — each becomes available in any blocks field.
  *  - Twig snippet entry points for every block and its internal partials.
  *  - A PHP helper that resolves hashed asset filenames from the Vite manifest.
- *  - An 'ui-library/assets' snippet for enqueueing CSS + JS from layouts.
+ *  - An 'kui/assets' snippet for enqueueing CSS + JS from layouts.
  *
  * @see  blueprints/blocks/accordion.yml   Block definition (Panel UI).
  * @see  snippets/blocks/accordion.twig    Block dispatcher (chooses variant).
@@ -27,7 +27,7 @@ use Kirby\Cms\App as Kirby;
  * @param  string $entry  e.g. 'src/js/main.js'
  * @return array{file?: string, css?: string[]}
  */
-function uiLibraryViteAsset(string $entry): array
+function kuiViteAsset(string $entry): array
 {
     static $manifest = null;
 
@@ -48,16 +48,16 @@ function uiLibraryViteAsset(string $entry): array
  * @param  string $file  Relative path within assets/, e.g. 'assets/main.js'
  * @return string
  */
-function uiLibraryAssetUrl(string $file): string
+function kuiAssetUrl(string $file): string
 {
-    return kirby()->plugin('ui-library/components')->mediaUrl() . '/' . ltrim($file, '/');
+    return kirby()->plugin('kui/components')->mediaUrl() . '/' . ltrim($file, '/');
 }
 
 // ---------------------------------------------------------------------------
 // Plugin registration
 // ---------------------------------------------------------------------------
 
-Kirby::plugin('ui-library/components', [
+Kirby::plugin('kui/components', [
 
     // ── Blueprints ──────────────────────────────────────────────────────────
 
@@ -70,14 +70,13 @@ Kirby::plugin('ui-library/components', [
 
         // Block blueprints — each is selectable in any `type: blocks` field.
         'blocks/accordion'     => __DIR__ . '/blueprints/blocks/accordion.yml',
-        'blocks/button'        => __DIR__ . '/blueprints/blocks/button.yml',
-    ],
+        'blocks/button'        => __DIR__ . '/blueprints/blocks/button.yml',        'blocks/select'        => __DIR__ . '/blueprints/blocks/select.yml',    ],
 
     // ── Snippets ─────────────────────────────────────────────────────────────
     //
     // Registering a .twig snippet causes the kirby-twig plugin to add the
     // parent directory of the first registered snippet to Twig's FilesystemLoader.
-    // Because all snippets live under site/plugins/ui-library/snippets/, the
+    // Because all snippets live under site/plugins/kui/snippets/, the
     // entire subtree (including _accordion_base.twig) is available to Twig's
     // include / embed tags once the @ui namespace is wired in config.php.
 
@@ -98,8 +97,14 @@ Kirby::plugin('ui-library/components', [
         // Include via {% include '@ui/_button.twig' with { variant: '…', label: '…' } %}.
         'blocks/_button'          => __DIR__ . '/snippets/blocks/_button.twig',
 
-        // Asset loader — call snippet('ui-library/assets') in your layout <head>.
-        'ui-library/assets'       => __DIR__ . '/snippets/ui-library/assets.php',
+        // Select widget — block dispatcher, variants, and internal base.
+        'blocks/select'           => __DIR__ . '/snippets/blocks/select.twig',
+        'blocks/select_simple'    => __DIR__ . '/snippets/blocks/select_simple.twig',
+        'blocks/select_grouped'   => __DIR__ . '/snippets/blocks/select_grouped.twig',
+        'blocks/_select_base'     => __DIR__ . '/snippets/blocks/_select_base.twig',
+
+        // Asset loader — call snippet('kui/assets') in your layout <head>.
+        'kui/assets'              => __DIR__ . '/snippets/ui-library/assets.php',
     ],
 
     // ── Panel sidebar areas ──────────────────────────────────────────────────

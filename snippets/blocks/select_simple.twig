@@ -1,0 +1,45 @@
+{#
+  select_simple.twig — Flat list variant.
+
+  Renders all items in a single unseparated listbox — good for short option
+  lists with no logical grouping.
+
+  To add a new variant: copy this file, rename it, change the item_list block,
+  then add a value to the blueprint style select and a branch to select.twig.
+  No changes to _select_base.twig, select.js, or _select.scss needed.
+#}
+
+{% set _wrapper_id    = block.html_id.isNotEmpty    ? block.html_id.value    : 'select' %}
+{% set _extra_class   = block.css_classes.value %}
+{% set _placeholder   = block.placeholder.isNotEmpty ? block.placeholder.value : 'Select an option…' %}
+{% set _is_disabled   = block.disabled.isTrue %}
+{% set _is_invalid    = block.invalid.isTrue %}
+{% set _error_message = block.error_message.value %}
+
+{% embed '@ui/_select_base.twig'
+	with {
+		items: block.items.toStructure(),
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class,
+		placeholder: _placeholder,
+		is_disabled: _is_disabled,
+		is_invalid: _is_invalid,
+		error_message: _error_message
+	}
+%}
+	{% block item_list %}
+		{% for item in items %}
+			<div
+				class="kui-select__item"
+				role="option"
+				data-kui-select-item
+				data-value="{{ item.value.value }}"
+				aria-selected="false"
+				id="{{ wrapper_id is defined and wrapper_id ? wrapper_id : 'select' }}__option-{{ loop.index }}"
+				{% if item.disabled.isTrue %}aria-disabled="true"{% endif %}
+			>
+				{{ item.label.value }}
+			</div>
+		{% endfor %}
+	{% endblock %}
+{% endembed %}

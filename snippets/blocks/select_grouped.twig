@@ -1,0 +1,99 @@
+{#
+  select_grouped.twig — Grouped list variant.
+
+  Organises items by their `group` field. Items sharing the same group name
+  are rendered under a labelled group heading. A visual separator is injected
+  between groups. Items with an empty group fall into an implicit ungrouped
+  section rendered first.
+
+  Group order follows the order items appear in the structure field — the first
+  item that introduces a group name establishes that group's position.
+#}
+
+{% set _wrapper_id    = block.html_id.isNotEmpty    ? block.html_id.value    : 'select' %}
+{% set _extra_class   = block.css_classes.value %}
+{% set _placeholder   = block.placeholder.isNotEmpty ? block.placeholder.value : 'Select an option…' %}
+{% set _is_disabled   = block.disabled.isTrue %}
+{% set _is_invalid    = block.invalid.isTrue %}
+{% set _error_message = block.error_message.value %}
+
+{% embed '@ui/_select_base.twig'
+	with {
+		items: block.items.toStructure(),
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class ~ ' kui-select--grouped',
+		placeholder: _placeholder,
+		is_disabled: _is_disabled,
+		is_invalid: _is_invalid,
+		error_message: _error_message
+	}
+%}
+	{% block item_list %}
+		{#
+		  Build an ordered list of unique group names, preserving the order
+		  in which each group first appears in the items structure.
+		  Twig has no native groupBy, so we collect them manually.
+		#}
+		{% set _group_names = [] %}
+		{% for item in items %}
+			{% set _g = item.group.value %}
+			{% if _g not in _group_names %}
+				{% set _group_names = _group_names|merge([_g]) %}
+			{% endif %}
+		{% endfor %}
+
+		{% set _base_id = wrapper_id is defined and wrapper_id ? wrapper_id : 'select' %}
+
+		{% for group_name in _group_names %}
+			{% set _group_idx = loop.index %}
+			{% set _is_last_group = loop.last %}
+
+			{# Collect items belonging to this group #}
+			{% set _group_items = [] %}
+			{% for item in items %}
+				{% if item.group.value == group_name %}
+					{% set _group_items = _group_items|merge([item]) %}
+				{% endif %}
+			{% endfor %}
+
+			{% set _label_id = _base_id ~ '__group-label-' ~ _group_idx %}
+
+			<div
+				class="kui-select__group"
+				role="group"
+				aria-labelledby="{{ _label_id }}"
+				data-kui-select-group
+			>
+				{% if group_name %}
+					<div
+						class="kui-select__label"
+						id="{{ _label_id }}"
+						data-kui-select-label
+						aria-hidden="true"
+					>
+						{{ group_name }}
+					</div>
+				{% endif %}
+
+				{% for item in _group_items %}
+					<div
+						class="kui-select__item"
+						role="option"
+						data-kui-select-item
+						data-value="{{ item.value.value }}"
+						aria-selected="false"
+						id="{{ _base_id }}__option-{{ _group_idx }}-{{ loop.index }}"
+						{% if item.disabled.isTrue %}aria-disabled="true"{% endif %}
+					>
+						{{ item.label.value }}
+					</div>
+				{% endfor %}
+			</div>
+
+			{% if not _is_last_group %}
+				<div class="kui-select__separator" data-kui-select-separator role="separator" aria-hidden="true"></div>
+			{% endif %}
+
+		{% endfor %}
+	{% endblock %}
+{% endembed %}

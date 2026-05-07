@@ -2,37 +2,37 @@
 // _accordion.scss — BEM styles for the accordion component.
 //
 // Structure mirrors the HTML:
-//   .accordion
-//   └─ .accordion__item        (data-accordion-item)
-//      ├─ .accordion__header
-//      │  └─ .accordion__trigger  (data-accordion-trigger, <button>)
-//      │     └─ .accordion__trigger-label
-//      └─ .accordion__body    (data-accordion-panel)
-//         └─ .accordion__body-inner
-//            └─ .accordion__content
+//   .kui-accordion
+//   └─ .kui-accordion__item        (data-kui-accordion-item)
+//      ├─ .kui-accordion__header
+//      │  └─ .kui-accordion__trigger  (data-kui-accordion-trigger, <button>)
+//      │     └─ .kui-accordion__trigger-label
+//      └─ .kui-accordion__body    (data-kui-accordion-panel)
+//         └─ .kui-accordion__body-inner
+//            └─ .kui-accordion__content
 // =============================================================================
 
 @use 'tokens' as *;
 
 // ── Block ─────────────────────────────────────────────────────────────────────
-.accordion {
+.kui-accordion {
   width: 100%;
   font-family: $font-family-base;
-  background-color: $color-readout-black;
-  color: $color-surface;
+  background-color: $color-surface;
+  color: $color-text;
 
   // ── Modifier: bordered variant ──────────────────────────────────────────
   // Wraps the full component in a 1 px border with rounded corners.
   // Apply via the css_classes field: accordion--bordered
   &--bordered {
-    border: $border-width solid $color-text-muted;
+    border: $border-width solid $color-border;
     border-radius: $border-radius-lg;
     overflow: hidden;
   }
 
   // ── Element: __item ────────────────────────────────────────────────────────
   &__item {
-    border-bottom: $border-width solid $color-text-muted;
+    border-bottom: $border-width solid $color-border;
 
     &:last-child {
       border-bottom: none;
@@ -59,7 +59,7 @@
     font-family: inherit;
     font-size: $font-size-base;
     font-weight: $font-weight-semibold;
-    color: $color-surface;
+    color: $color-text;
     text-align: left;
     transition:
       text-decoration-color $transition-base,

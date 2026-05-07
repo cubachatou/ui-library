@@ -1,7 +1,7 @@
 // =============================================================================
 // vite.config.js — UI Library plugin build configuration.
 //
-// Run from inside site/plugins/ui-library/:
+// Run from inside site/plugins/kui/:
 //   npm run dev   → Vite dev server on port 5174 with HMR enabled.
 //   npm run build → Hashed production bundle output to ./assets/
 //                   (inside the plugin folder — self-contained for distribution).
@@ -40,7 +40,7 @@ export default defineConfig(({ command }) => ({
 
 		rollupOptions: {
 			input: {
-				"ui-library": resolve(pluginRoot, "src/js/main.js"),
+				"kui": resolve(pluginRoot, "src/js/main.js"),
 			},
 		},
 

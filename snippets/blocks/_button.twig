@@ -45,8 +45,8 @@
 {% set _icon_before = icon_before is defined and icon_before ? icon_before : ''        %}
 {% set _icon_after  = icon_after  is defined and icon_after  ? icon_after  : ''        %}
 
-{% set _size_mod = _size != 'default' ? ' button--' ~ _size : '' %}
-{% set _class    = 'button button--' ~ _variant ~ _size_mod ~ _extra %}
+{% set _size_mod = _size != 'default' ? ' kui-button--' ~ _size : '' %}
+{% set _class    = 'kui-button kui-button--' ~ _variant ~ _size_mod ~ _extra %}
 
 <button
 	class="{{ _class }}"
@@ -55,12 +55,12 @@
 	{{- _attrs ? ' ' ~ _attrs|raw : '' -}}
 >
 	{%- if _icon_before -%}
-		<span class="button__icon button__icon--before" aria-hidden="true">{{ _icon_before|raw }}</span>
+		<span class="kui-button__icon kui-button__icon--before" aria-hidden="true">{{ _icon_before|raw }}</span>
 	{%- endif -%}
 	{%- if _label -%}
-		<span class="button__label">{{ _label }}</span>
+		<span class="kui-button__label">{{ _label }}</span>
 	{%- endif -%}
 	{%- if _icon_after -%}
-		<span class="button__icon button__icon--after" aria-hidden="true">{{ _icon_after|raw }}</span>
+		<span class="kui-button__icon kui-button__icon--after" aria-hidden="true">{{ _icon_after|raw }}</span>
 	{%- endif -%}
 </button>

@@ -8,16 +8,16 @@
  * JS is bound exclusively to data-* attributes — never to CSS class names.
  * This means any visual variant (simple, rich, or future ones) works without
  * any JS changes, as long as the base template keeps:
- *   data-accordion          on the root element
- *   data-accordion-trigger  on each <button>
- *   data-accordion-panel    on each collapsible region
+ *   data-kui-accordion          on the root element
+ *   data-kui-accordion-trigger  on each <button>
+ *   data-kui-accordion-panel    on each collapsible region
  *   aria-controls / aria-expanded wired up correctly
  */
 
 /**
  * @typedef {Object} AccordionConfig
- * @property {string}   [triggerSelector='[data-accordion-trigger]']
- * @property {string}   [panelSelector='[data-accordion-panel]']
+ * @property {string}   [triggerSelector='[data-kui-accordion-trigger]']
+ * @property {string}   [panelSelector='[data-kui-accordion-panel]']
  * @property {boolean}  [allowMultipleOpen=false]  Allow several items open at once.
  * @property {Function} [onOpen]   Strategy hook — called after an item opens.
  *                                 Signature: (trigger: HTMLElement, panel: HTMLElement) => void
@@ -27,7 +27,7 @@
 
 export class Accordion {
 	/**
-	 * @param {HTMLElement}    root    The [data-accordion] root element.
+	 * @param {HTMLElement}    root    The [data-kui-accordion] root element.
 	 * @param {AccordionConfig} [config]
 	 */
 	constructor(root, config = {}) {
@@ -35,9 +35,9 @@ export class Accordion {
 
 		/** @type {Required<AccordionConfig>} */
 		this.config = {
-			triggerSelector: "[data-accordion-trigger]",
-			panelSelector: "[data-accordion-panel]",
-			allowMultipleOpen: root.hasAttribute("data-accordion-multiple"),
+			triggerSelector: "[data-kui-accordion-trigger]",
+			panelSelector: "[data-kui-accordion-panel]",
+			allowMultipleOpen: root.hasAttribute("data-kui-accordion-multiple"),
 			onOpen: null,
 			onClose: null,
 			...config,
@@ -162,11 +162,11 @@ export class Accordion {
 }
 
 /**
- * Auto-initialize all [data-accordion] roots in the document.
+ * Auto-initialize all [data-kui-accordion] roots in the document.
  *
  * @param {AccordionConfig} [config]  Shared config forwarded to every instance.
  * @returns {Accordion[]}             Array of initialized Accordion instances.
  */
 export function initAccordions(config = {}) {
-	return Array.from(document.querySelectorAll("[data-accordion]")).map((root) => new Accordion(root, config).init());
+	return Array.from(document.querySelectorAll("[data-kui-accordion]")).map((root) => new Accordion(root, config).init());
 }

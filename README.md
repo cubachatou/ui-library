@@ -1,4 +1,4 @@
-# kirby-ui-library
+# KUI — Kirby UI Library
 
 A flexible UI component library plugin for [Kirby CMS 5](https://getkirby.com) with Twig template inheritance, data-attribute JS hooks, and a self-contained Vite asset pipeline.
 
@@ -26,21 +26,21 @@ A flexible UI component library plugin for [Kirby CMS 5](https://getkirby.com) w
 ### Via Composer (recommended)
 
 ```bash
-composer require oleksii/kirby-ui-library
+composer require oleksii/kui
 ```
 
-Composer places the plugin at `site/plugins/ui-library/` automatically via Kirby's composer-installer.
+Composer places the plugin at `site/plugins/kui/` automatically via Kirby's composer-installer.
 
 ### Via Git Submodule
 
 ```bash
-git submodule add https://github.com/your-username/kirby-ui-library site/plugins/ui-library
+git submodule add https://github.com/your-username/kirby-kui site/plugins/kui
 git submodule update --init
 ```
 
 ### Manually
 
-Copy the entire plugin folder into `site/plugins/ui-library/`.
+Copy the entire plugin folder into `site/plugins/kui/`.
 
 ## Configuration
 
@@ -51,7 +51,7 @@ Add this to `site/config/config.php` so templates can reference plugin snippets 
 ```php
 return [
     'wearejust.twig.namespaces' => [
-        'ui' => __DIR__ . '/../plugins/ui-library/snippets/blocks',
+        'ui' => __DIR__ . '/../plugins/kui/snippets/blocks',
     ],
 ];
 ```
@@ -61,13 +61,13 @@ return [
 Call the assets snippet from your layout's `<head>`. In a Twig template:
 
 ```twig
-{{ snippet('ui-library/assets')|raw }}
+{{ snippet('kui/assets')|raw }}
 ```
 
 In a PHP template:
 
 ```php
-<?php snippet('ui-library/assets') ?>
+<?php snippet('kui/assets') ?>
 ```
 
 ## Usage
@@ -145,7 +145,7 @@ fields:
 
 ```bash
 # Inside the plugin directory
-cd site/plugins/ui-library
+cd site/plugins/kui
 npm install
 ```
 
@@ -168,7 +168,7 @@ Output goes to `assets/` inside the plugin folder. The hashed manifest at `asset
 ### Project structure
 
 ```
-site/plugins/ui-library/
+site/plugins/kui/
 ├── assets/                  # Built files (committed — no npm needed by consumers)
 │   ├── .vite/manifest.json
 │   └── assets/
@@ -183,7 +183,7 @@ site/plugins/ui-library/
 │   │   ├── accordion.twig         # Dispatcher (reads style field)
 │   │   ├── accordion_simple.twig  # Text-only variant
 │   │   └── accordion_rich.twig    # Image + icon variant
-│   └── ui-library/
+│   └── kui/
 │       └── assets.php             # Asset enqueueing snippet
 ├── src/
 │   ├── js/
@@ -211,13 +211,13 @@ Vite dev (port 5174)          PHP server (port 8000)
 
 Vite build (production)
 ┌─────────────────────┐       ┌──────────────────────────────┐
-│  src/js/main.js     │ ────► │  assets/assets/ui-library-   │
+│  src/js/main.js     │ ────► │  assets/assets/kui-   │
 │  src/scss/main.scss │       │    xxxxxxxx.js               │
 └─────────────────────┘       │  assets/assets/style-xxxx.css│
                                │  assets/.vite/manifest.json  │
                                └──────────────────────────────┘
 Kirby 5 media pipeline serves plugin assets via:
-  /media/plugins/ui-library/components/<hash>/assets/…
+  /media/plugins/kui/components/<hash>/assets/…
 ```
 
 ## License

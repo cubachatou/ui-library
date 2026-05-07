@@ -2,17 +2,17 @@
 // _button.scss — BEM styles for the button component.
 //
 // Structure:
-//   .button
-//   ├─ .button__label
-//   └─ .button__icon  (.button__icon--before / .button__icon--after)
+//   .kui-button
+//   ├─ .kui-button__label
+//   └─ .kui-button__icon  (.kui-button__icon--before / .kui-button__icon--after)
 //
 // Variants (--modifier on root):
-//   .button--default      Near-black fill; the standard action.
-//   .button--destructive  Semantic red for irreversible actions.
-//   .button--outline      Transparent fill, bordered.
-//   .button--secondary    Quiet-surface fill; secondary actions.
-//   .button--ghost        No border, no fill; hover-revealed background.
-//   .button--link         No border, no fill; text-link appearance.
+//   .kui-button--default      Near-black fill; the standard action.
+//   .kui-button--destructive  Semantic red for irreversible actions.
+//   .kui-button--outline      Transparent fill, bordered.
+//   .kui-button--secondary    Quiet-surface fill; secondary actions.
+//   .kui-button--ghost        No border, no fill; hover-revealed background.
+//   .kui-button--link         No border, no fill; text-link appearance.
 //
 // Sizes (--modifier on root; no modifier = default size):
 //   .button--sm           14px text, compact padding.
@@ -28,18 +28,14 @@
 
 @use 'tokens' as *;
 
-// Local values — fill gaps between token steps without polluting shared tokens.
 $_btn-height-default: 2.375rem; //  38px
 $_btn-height-sm: 2rem; //  32px
 $_btn-height-lg: 2.75rem; //  44px
 $_btn-icon-size: 2.375rem; //  38px square — matches default height
 
-$_color-default-hover: #333333; // readout-black lightened one step
-$_color-secondary-hover: #ebebeb; // quiet-paper darkened one step
-
 // ── Base ──────────────────────────────────────────────────────────────────────
 
-.button {
+.kui-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -99,13 +95,13 @@ $_color-secondary-hover: #ebebeb; // quiet-paper darkened one step
   // Near-black — deliberately not Active Blue (see DESIGN.md § 2: "Active Blue
   // is infrastructure only — never a background fill, never a call-to-action").
   &--default {
-    background-color: $color-readout-black;
-    border-color: $color-readout-black;
-    color: $color-shell-white;
+    background-color: $color-surface;
+    border-color: $color-border;
+    color: $color-text;
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
-      background-color: $_color-default-hover;
-      border-color: $_color-default-hover;
+      background-color: $color-surface-hover;
+      border-color: $color-border;
     }
   }
 
@@ -113,7 +109,7 @@ $_color-secondary-hover: #ebebeb; // quiet-paper darkened one step
   &--destructive {
     background-color: $color-destructive;
     border-color: $color-destructive;
-    color: $color-shell-white;
+    color: $color-text;
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
       background-color: $color-destructive-hover;
@@ -121,25 +117,26 @@ $_color-secondary-hover: #ebebeb; // quiet-paper darkened one step
     }
   }
 
+  // ── Variant: secondary ─────────────────────────────────────────────────────
+  &--secondary {
+    background-color: $color-text;
+    border-color: $color-border;
+    color: $color-surface;
+
+    &:hover:not(:disabled):not([aria-disabled='true']) {
+      background-color: $color-text-hover;
+      border-color: $color-border;
+    }
+  }
+
   // ── Variant: outline ──────────────────────────────────────────────────────
   &--outline {
     background-color: transparent;
     border-color: $color-border;
-    color: $color-shell-white;
-
-    &:hover:not(:disabled):not([aria-disabled='true']) {
-      background-color: $color-readout-black;
-    }
-  }
-
-  // ── Variant: secondary ─────────────────────────────────────────────────────
-  &--secondary {
-    background-color: $color-surface-alt;
-    border-color: $color-border;
     color: $color-text;
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
-      background-color: $_color-secondary-hover;
+      background-color: $color-surface;
     }
   }
 
@@ -147,11 +144,11 @@ $_color-secondary-hover: #ebebeb; // quiet-paper darkened one step
   &--ghost {
     background-color: transparent;
     border-color: transparent;
-    color: $color-shell-white;
+    color: $color-text;
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
-      background-color: $color-readout-black;
-      border-color: $color-surface-alt;
+      background-color: $color-surface;
+      border-color: $color-border;
     }
   }
 
@@ -161,14 +158,14 @@ $_color-secondary-hover: #ebebeb; // quiet-paper darkened one step
   &--link {
     background-color: transparent;
     border-color: transparent;
-    color: $color-active-blue;
+    color: $color-focus-ring;
     height: auto;
     padding: 0;
     text-decoration: underline;
     text-underline-offset: 3px;
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
-      color: $color-pressed-blue;
+      color: $color-focus-ring-hover;
     }
 
     &:focus-visible {
@@ -199,7 +196,7 @@ $_color-secondary-hover: #ebebeb; // quiet-paper darkened one step
     padding: 0;
     flex-shrink: 0;
 
-    .button__icon {
+    .kui-button__icon {
       width: 1.25em;
       height: 1.25em;
 

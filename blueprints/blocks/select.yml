@@ -1,0 +1,86 @@
+title: Select
+icon: angle-down
+preview: fields
+wysiwyg: true
+
+tabs:
+  content:
+    label: Content
+    fields:
+      placeholder:
+        type: text
+        label: Placeholder
+        default: Select an option…
+        width: 1/2
+
+      items:
+        type: structure
+        label: Options
+        sortable: true
+        fields:
+          label:
+            type: text
+            label: Label
+            required: true
+            width: 1/3
+
+          value:
+            type: text
+            label: Value
+            required: true
+            width: 1/3
+
+          group:
+            type: text
+            label: Group
+            help: "Items sharing the same group name are grouped together. Leave empty for ungrouped items."
+            width: 1/3
+
+          disabled:
+            type: toggle
+            label: Disabled
+            default: false
+            help: "Prevent this option from being selected."
+
+  settings:
+    label: Settings
+    fields:
+      style:
+        type: select
+        label: Display Style
+        default: simple
+        width: 1/2
+        options:
+          - value: simple
+            text: "Simple — flat list"
+          - value: grouped
+            text: "Grouped — with labels and separators"
+
+      html_id:
+        extends: fields/html_id
+        width: 1/2
+
+      css_classes:
+        extends: fields/css_classes
+        width: 1/2
+
+      disabled:
+        type: toggle
+        label: Disabled
+        default: false
+        width: 1/2
+        help: "Disable the entire select widget."
+
+      invalid:
+        type: toggle
+        label: Invalid
+        default: false
+        width: 1/2
+        help: "Show the error state (red border, aria-invalid)."
+
+      error_message:
+        type: text
+        label: Error Message
+        help: "Shown beneath the trigger when the widget is in an invalid state."
+        when:
+          invalid: true

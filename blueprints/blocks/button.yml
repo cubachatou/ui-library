@@ -1,13 +1,10 @@
 title: Button
 icon: circle
-preview: fields
-wysiwyg: false
 
 fields:
   label:
     type: text
     label: Label
-    required: true
     width: 1/2
 
   variant:

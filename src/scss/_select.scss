@@ -1,0 +1,204 @@
+// =============================================================================
+// _select.scss — BEM styles for the Select component.
+//
+// Structure mirrors the HTML:
+//   .kui-select
+//   ├─ .kui-select__trigger          (data-kui-select-trigger, <button role="combobox">)
+//   │  ├─ .kui-select__value         (data-kui-select-value, <span>)
+//   │  └─ .kui-select__chevron       (<svg>, decorative)
+//   ├─ .kui-select__error            (role="alert", shown when [data-invalid])
+//   └─ .kui-select__content          (data-kui-select-content, role="listbox")
+//      ├─ .kui-select__group         (data-kui-select-group, role="group") [grouped variant]
+//      │  ├─ .kui-select__label      (data-kui-select-label)               [grouped variant]
+//      │  └─ .kui-select__item       (data-kui-select-item, role="option")
+//      ├─ .kui-select__separator     (data-kui-select-separator)           [grouped variant]
+//      └─ .kui-select__item          (data-kui-select-item, role="option") [simple variant]
+//
+// State is driven entirely by HTML attributes — never JS-added CSS classes:
+//   [data-state="open"]       root and content  — popup is visible
+//   [aria-selected="true"]    item              — currently selected option
+//   [aria-disabled="true"]    item / trigger    — non-interactive
+//   [data-invalid]            root              — error state
+//   [aria-invalid="true"]     trigger           — red border on trigger
+//   [disabled]                trigger           — whole widget disabled
+// =============================================================================
+
+@use 'tokens' as *;
+
+// ── Block ─────────────────────────────────────────────────────────────────────
+.kui-select {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  gap: $space-xs;
+  width: 100%;
+  max-width: 15rem;
+  font-family: $font-family-base;
+}
+
+// ── Trigger ───────────────────────────────────────────────────────────────────
+.kui-select__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-sm;
+  width: 100%;
+  padding: $space-sm $space-md;
+  background-color: $color-surface;
+  border: $border-width solid $color-border;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: $font-size-base;
+  color: $color-text;
+  text-align: left;
+  transition:
+    border-color $transition-fast,
+    box-shadow $transition-fast;
+
+  &:hover:not([disabled]) {
+    border-color: $color-text-muted;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-focus-ring;
+    outline-offset: 2px;
+  }
+
+  // Invalid state — red border, driven by aria-invalid on the trigger itself.
+  &[aria-invalid='true'] {
+    border-color: $color-destructive;
+
+    &:focus-visible {
+      outline-color: $color-destructive;
+    }
+  }
+
+  // Disabled state — non-interactive; keep focusable for assistive technology
+  // only when the disabled attribute is present (not aria-disabled).
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// ── Value text ────────────────────────────────────────────────────────────────
+.kui-select__value {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: $color-text-muted; // placeholder colour; JS swaps to $color-text on selection
+
+  // When a real value is selected the JS sets data-placeholder="false"
+  // (or simply the text changes); SCSS can't differentiate text content, so
+  // JS also adds [data-has-value] on the root to change the text colour.
+  .kui-select[data-has-value] & {
+    color: $color-text;
+  }
+}
+
+// ── Chevron icon ──────────────────────────────────────────────────────────────
+.kui-select__chevron {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  color: $color-text-muted;
+  transition: transform $transition-base;
+
+  // Rotate when open.
+  .kui-select[data-state='open'] & {
+    transform: rotate(-180deg);
+  }
+}
+
+// ── Error message ─────────────────────────────────────────────────────────────
+.kui-select__error {
+  font-size: $font-size-sm;
+  color: $color-destructive;
+  line-height: $line-height-base;
+}
+
+// ── Content (listbox popup) ───────────────────────────────────────────────────
+.kui-select__content {
+  position: absolute;
+  top: calc(100% + $space-xs);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  max-height: 18rem; // ~288px — enables scrolling for long lists
+  overflow-y: auto;
+  background-color: $color-surface;
+  border: $border-width solid $color-border;
+  border-radius: $border-radius-sm;
+  padding: $space-xs 0;
+
+  // Hidden state — toggled by JS via the `hidden` attribute → data-state.
+  &[hidden] {
+    display: none;
+  }
+
+  // Smooth entry when open (CSS-only, no JS animation needed).
+  &[data-state='open'] {
+    display: block;
+  }
+}
+
+// ── Group ─────────────────────────────────────────────────────────────────────
+.kui-select__group {
+  // No visual styles needed; structural wrapper for aria-labelledby.
+}
+
+// ── Group label ───────────────────────────────────────────────────────────────
+.kui-select__label {
+  padding: $space-xs $space-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-muted;
+  cursor: default;
+  user-select: none;
+}
+
+// ── Option item ───────────────────────────────────────────────────────────────
+.kui-select__item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: $space-sm $space-md;
+  font-size: $font-size-base;
+  color: $color-text;
+  user-select: none;
+  transition: background-color $transition-fast;
+
+  // Hover / keyboard-focus highlight (managed via aria-activedescendant in JS,
+  // but we also handle the pointer hover here for mouse users).
+  &:hover:not([aria-disabled='true']) {
+    background-color: $color-surface-hover;
+  }
+
+  // Currently focused item (JS adds [data-focused] to the active descendant).
+  &[data-focused] {
+    background-color: $color-surface-hover;
+    outline: none;
+  }
+
+  // Selected item.
+  &[aria-selected='true'] {
+    font-weight: $font-weight-semibold;
+  }
+
+  // Disabled item.
+  &[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// ── Separator ─────────────────────────────────────────────────────────────────
+.kui-select__separator {
+  height: $border-width;
+  margin: $space-xs 0;
+  background-color: $color-border;
+}

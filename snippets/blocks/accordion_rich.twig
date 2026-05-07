@@ -6,7 +6,7 @@
     item_content → extra wrapper div with BEM modifier for styled background.
 
   The JS layer is completely unaware of this additional markup. It continues
-  to operate solely on [data-accordion-trigger] and [data-accordion-panel].
+  to operate solely on [data-kui-accordion-trigger] and [data-kui-accordion-panel].
 #}
 
 {% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'accordion' %}
@@ -16,15 +16,15 @@
 	with {
 		items: block.items.toStructure(),
 		wrapper_id: _wrapper_id,
-		extra_class: _extra_class ~ ' accordion--rich'
+		extra_class: _extra_class ~ ' kui-accordion--rich'
 	}
 %}
 	{% block item_header %}
 		{% set cover = item.image.toFile %}
 		{% if cover %}
-			<img class="accordion__image" src="{{ cover.url }}" alt="{{ cover.alt }}" width="{{ cover.width }}" height="{{ cover.height }}" loading="lazy" />
+			<img class="kui-accordion__image" src="{{ cover.url }}" alt="{{ cover.alt }}" width="{{ cover.width }}" height="{{ cover.height }}" loading="lazy" />
 		{% endif %}
 
-		<span class="accordion__trigger-label">{{ item.title.value }}</span>
+		<span class="kui-accordion__trigger-label">{{ item.title.value }}</span>
 	{% endblock %}
 {% endembed %}

@@ -1,5 +1,5 @@
 {
-	"name": "oleksii/kirby-ui-library",
+	"name": "oleksii/kui",
 	"description": "Flexible UI component library plugin for Kirby CMS with Twig template inheritance and Vite asset pipeline.",
 	"type": "kirby-plugin",
 	"version": "0.1.0",
@@ -9,7 +9,7 @@
 		"kirby-plugin",
 		"kirby-cms",
 		"twig",
-		"ui-library",
+		"kui",
 		"components"
 	],
 	"require": {

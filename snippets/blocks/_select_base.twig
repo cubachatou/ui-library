@@ -1,0 +1,104 @@
+{#
+  _select_base.twig — Base select layout (internal partial).
+
+  Expected variables (passed via {% embed %} with {...}):
+    items         {StructureCollection}  Options to render inside the listbox.
+    wrapper_id    {string}               HTML id for the root element.
+    extra_class   {string}               Extra CSS classes on the root element.
+    placeholder   {string}               Text shown when no option is selected.
+    is_disabled   {bool}                 Disable the whole widget.
+    is_invalid    {bool}                 Apply error state (data-invalid + aria-invalid).
+    error_message {string}               Error text shown below the trigger.
+
+  Overridable blocks:
+    {% block item_list %}  — Full listbox contents (items, groups, separators).
+
+  JS hook attributes (never rename or remove):
+    data-kui-select           — Root element.
+    data-kui-select-trigger   — The <button> that opens/closes the popup.
+    data-kui-select-value     — <span> inside trigger displaying the current value.
+    data-kui-select-content   — The listbox popup container.
+    data-kui-select-item      — Individual option (role="option").
+    data-kui-select-group     — Group wrapper (role="group").
+    data-kui-select-label     — Visual group heading (aria-label source).
+    data-kui-select-separator — Visual separator between groups (aria-hidden).
+
+  Accessibility:
+    - Trigger: aria-expanded, aria-haspopup="listbox", aria-controls → listbox id
+    - Trigger: aria-invalid when is_invalid
+    - Listbox: role="listbox", aria-label="Options"
+    - Items: role="option", aria-selected, aria-disabled
+    - Root: data-invalid attribute when is_invalid (drives SCSS red border)
+    - Keyboard: managed by select.js (↑↓ navigate, Enter/Space select, Esc close)
+#}
+
+{% set _id      = wrapper_id  is defined and wrapper_id  ? wrapper_id  : 'select' %}
+{% set _extra   = extra_class is defined and extra_class ? ' ' ~ extra_class : '' %}
+{% set _ph      = placeholder  is defined and placeholder  ? placeholder  : 'Select an option…' %}
+{% set _disabled = is_disabled is defined and is_disabled %}
+{% set _invalid  = is_invalid  is defined and is_invalid %}
+{% set _errmsg   = error_message is defined and error_message ? error_message : '' %}
+
+{% set _listbox_id = _id ~ '__listbox' %}
+{% set _trigger_id = _id ~ '__trigger' %}
+{% set _value_id   = _id ~ '__value' %}
+
+<div
+  class="kui-select{{ _extra }}"
+  id="{{ _id }}"
+  data-kui-select
+  data-state="closed"
+  {% if _invalid %}data-invalid{% endif %}
+>
+  {# ── Trigger button ─────────────────────────────────────────────────────── #}
+  <button
+    class="kui-select__trigger"
+    id="{{ _trigger_id }}"
+    type="button"
+    role="combobox"
+    aria-expanded="false"
+    aria-haspopup="listbox"
+    aria-controls="{{ _listbox_id }}"
+    aria-labelledby="{{ _trigger_id }} {{ _value_id }}"
+    data-kui-select-trigger
+    {% if _disabled %}disabled aria-disabled="true"{% endif %}
+    {% if _invalid %}aria-invalid="true"{% endif %}
+  >
+    <span class="kui-select__value" id="{{ _value_id }}" data-kui-select-value>{{ _ph }}</span>
+    <svg
+      class="kui-select__chevron"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </button>
+
+  {# ── Error message ──────────────────────────────────────────────────────── #}
+  {% if _invalid and _errmsg %}
+    <span class="kui-select__error" role="alert">{{ _errmsg }}</span>
+  {% endif %}
+
+  {# ── Listbox popup ─────────────────────────────────────────────────────────────────── #}
+  <div
+    class="kui-select__content"
+    id="{{ _listbox_id }}"
+    role="listbox"
+    aria-label="Options"
+    data-kui-select-content
+    data-state="closed"
+    hidden
+  >
+    {% block item_list %}
+      {# Variants override this block to render flat or grouped options. #}
+    {% endblock %}
+  </div>
+
+</div>

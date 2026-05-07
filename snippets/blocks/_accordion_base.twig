@@ -11,20 +11,20 @@
     {% block item_content %} — Panel body content (prose, rich wrappers, …)
 
   JS hook attributes (never remove or rename):
-    data-accordion          — Root element, targets the whole widget.
-    data-accordion-item     — Individual item wrapper.
-    data-accordion-trigger  — The <button> toggling aria-expanded.
-    data-accordion-panel    — The collapsible region.
+    data-kui-accordion          — Root element, targets the whole widget.
+    data-kui-accordion-item     — Individual item wrapper.
+    data-kui-accordion-trigger  — The <button> toggling aria-expanded.
+    data-kui-accordion-panel    — The collapsible region.
 #}
 
 {% set _id    = wrapper_id  is defined and wrapper_id  ? wrapper_id  : 'accordion' %}
 {% set _extra = extra_class is defined and extra_class ? ' ' ~ extra_class : '' %}
 
 <div
-  class="accordion{{ _extra }}"
+  class="kui-accordion{{ _extra }}"
   id="{{ _id }}"
-  data-accordion
-  {% if block is defined and block.allow_multiple_open.isTrue %}data-accordion-multiple{% endif %}
+  data-kui-accordion
+  {% if block is defined and block.allow_multiple_open.isTrue %}data-kui-accordion-multiple{% endif %}
 >
   {% for item in items %}
     {% set trigger_id = _id ~ '__trigger-' ~ loop.index %}
@@ -32,16 +32,16 @@
     {% set _disabled  = item.disabled.isTrue %}
     {% set _initially_open = loop.first and not _disabled %}
 
-    <div class="accordion__item" data-accordion-item>
+    <div class="kui-accordion__item" data-kui-accordion-item>
 
-      <div class="accordion__header">
+      <div class="kui-accordion__header">
         <button
-          class="accordion__trigger"
+          class="kui-accordion__trigger"
           id="{{ trigger_id }}"
           type="button"
           aria-expanded="{{ _initially_open ? 'true' : 'false' }}"
           aria-controls="{{ panel_id }}"
-          data-accordion-trigger
+          data-kui-accordion-trigger
           {% if _disabled %}aria-disabled="true"{% endif %}
         >
           {% block item_header %}
@@ -51,16 +51,16 @@
       </div>
 
       <div
-        class="accordion__body"
+        class="kui-accordion__body"
         id="{{ panel_id }}"
         role="region"
         aria-labelledby="{{ trigger_id }}"
         {% if not _initially_open %}hidden{% endif %}
-        data-accordion-panel
+        data-kui-accordion-panel
       >
-        <div class="accordion__body-inner">
+        <div class="kui-accordion__body-inner">
           {% block item_content %}
-            <div class="accordion__content">
+            <div class="kui-accordion__content">
               {{ item.text.toBlocks|raw }}
             </div>
           {% endblock %}

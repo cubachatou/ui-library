@@ -7,7 +7,9 @@
 
 import "../scss/main.scss";
 import { initAccordions } from "./accordion.js";
+import { initSelects } from "./select.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 	initAccordions();
+	initSelects();
 });
