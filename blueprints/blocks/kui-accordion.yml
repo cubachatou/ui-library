@@ -33,18 +33,18 @@ tabs:
               - heading
               - text
               - list
-              - button
-              - carousel
+              - kui-button
+              - kui-carousel
 
   settings:
     label: Settings
     fields:
       html_id:
-        extends: fields/html_id
+        extends: fields/kui-html_id
         width: 1/2
 
       css_classes:
-        extends: fields/css_classes
+        extends: fields/kui-css_classes
         width: 1/2
 
       allow_multiple_open:

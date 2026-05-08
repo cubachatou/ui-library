@@ -57,11 +57,11 @@ tabs:
             text: "Grouped — with labels and separators"
 
       html_id:
-        extends: fields/html_id
+        extends: fields/kui-html_id
         width: 1/2
 
       css_classes:
-        extends: fields/css_classes
+        extends: fields/kui-css_classes
         width: 1/2
 
       disabled:

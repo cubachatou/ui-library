@@ -13,13 +13,22 @@
  * In production it reads hashed filenames from the Vite manifest.
  */
 
+// $js — set to false to load only the CSS and skip the JS bundle.
+// Use this when you are initialising components yourself (Class Extension or
+// Eject strategy) to prevent the plugin bundle from double-initialising them.
+//   {{ snippet('kui/assets', ['js' => false]) | raw }}
+$js = $js ?? true;
+
 $port      = option('kui.components.vite.port', 5174);
 $devOrigin = 'http://localhost:' . $port;
 
 if (option('debug')) {
     // ── Development — Vite HMR client + unbundled source ──────────────────
-    echo '<script type="module" src="' . $devOrigin . '/@vite/client"></script>' . PHP_EOL;
-    echo '<script type="module" src="' . $devOrigin . '/src/js/main.js"></script>' . PHP_EOL;
+    echo '<link rel="stylesheet" href="' . $devOrigin . '/src/scss/main.scss">' . PHP_EOL;
+    if ($js) {
+        echo '<script type="module" src="' . $devOrigin . '/@vite/client"></script>' . PHP_EOL;
+        echo '<script type="module" src="' . $devOrigin . '/src/js/main.js"></script>' . PHP_EOL;
+    }
 } else {
     // ── Production — hashed filenames from the Vite manifest ──────────────
     // With cssCodeSplit: false, Vite emits CSS as a separate manifest entry
@@ -33,7 +42,7 @@ if (option('debug')) {
         echo '<link rel="stylesheet" href="' . kuiAssetUrl($cssFile) . '">' . PHP_EOL;
     }
 
-    if (!empty($jsEntry['file'])) {
+    if ($js && !empty($jsEntry['file'])) {
         echo '<script type="module" src="' . kuiAssetUrl($jsEntry['file']) . '"></script>' . PHP_EOL;
     }
 }

@@ -1,17 +1,16 @@
 /**
  * accordion.js — Accordion widget module.
  *
- * Architecture: class-based with a Strategy pattern hook so callers can inject
- * custom open/close logic (e.g. smooth animation, analytics events) without
- * modifying this file.
- *
- * JS is bound exclusively to data-* attributes — never to CSS class names.
- * This means any visual variant (simple, rich, or future ones) works without
- * any JS changes, as long as the base template keeps:
+ * Bound exclusively to data-* attributes — never to CSS class names.
+ * Any visual variant works without JS changes as long as the base template keeps:
  *   data-kui-accordion          on the root element
  *   data-kui-accordion-trigger  on each <button>
  *   data-kui-accordion-panel    on each collapsible region
  *   aria-controls / aria-expanded wired up correctly
+ *
+ * Per-instance configuration is read from a JSON attribute on the root element:
+ *   data-kui-accordion-options='{"allowMultipleOpen":true}'
+ * Values in this attribute override the globalConfig passed to initAccordions().
  */
 
 /**
@@ -37,7 +36,7 @@ export class Accordion {
 		this.config = {
 			triggerSelector: "[data-kui-accordion-trigger]",
 			panelSelector: "[data-kui-accordion-panel]",
-			allowMultipleOpen: root.hasAttribute("data-kui-accordion-multiple"),
+			allowMultipleOpen: false,
 			onOpen: null,
 			onClose: null,
 			...config,
@@ -164,9 +163,16 @@ export class Accordion {
 /**
  * Auto-initialize all [data-kui-accordion] roots in the document.
  *
- * @param {AccordionConfig} [config]  Shared config forwarded to every instance.
- * @returns {Accordion[]}             Array of initialized Accordion instances.
+ * Per-instance options stored in `data-kui-accordion-options` (JSON) override
+ * the shared `globalConfig`. This allows Panel blueprint fields to drive JS
+ * behaviour without any consumer JavaScript.
+ *
+ * @param {AccordionConfig} [globalConfig]  Shared config forwarded to every instance.
+ * @returns {Accordion[]}                   Array of initialized Accordion instances.
  */
-export function initAccordions(config = {}) {
-	return Array.from(document.querySelectorAll("[data-kui-accordion]")).map((root) => new Accordion(root, config).init());
+export function initAccordions(globalConfig = {}) {
+	return Array.from(document.querySelectorAll("[data-kui-accordion]")).map((root) => {
+		const instanceConfig = JSON.parse(root.dataset.kuiAccordionOptions ?? "{}");
+		return new Accordion(root, { ...globalConfig, ...instanceConfig }).init();
+	});
 }

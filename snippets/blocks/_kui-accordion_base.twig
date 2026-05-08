@@ -24,7 +24,7 @@
   class="kui-accordion{{ _extra }}"
   id="{{ _id }}"
   data-kui-accordion
-  {% if block is defined and block.allow_multiple_open.isTrue %}data-kui-accordion-multiple{% endif %}
+  data-kui-accordion-options='{{ {"allowMultipleOpen": block is defined and block.allow_multiple_open.isTrue}|json_encode }}'
 >
   {% for item in items %}
     {% set trigger_id = _id ~ '__trigger-' ~ loop.index %}

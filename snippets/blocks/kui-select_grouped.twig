@@ -17,7 +17,7 @@
 {% set _is_invalid    = block.invalid.isTrue %}
 {% set _error_message = block.error_message.value %}
 
-{% embed '@ui/_select_base.twig'
+{% embed '@ui/_kui-select_base.twig'
 	with {
 		items: block.items.toStructure(),
 		wrapper_id: _wrapper_id,

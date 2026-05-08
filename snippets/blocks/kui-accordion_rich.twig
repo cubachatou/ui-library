@@ -12,7 +12,7 @@
 {% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'accordion' %}
 {% set _extra_class = block.css_classes.value %}
 
-{% embed '@ui/_accordion_base.twig'
+{% embed '@ui/_kui-accordion_base.twig'
 	with {
 		items: block.items.toStructure(),
 		wrapper_id: _wrapper_id,

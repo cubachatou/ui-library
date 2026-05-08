@@ -10,8 +10,8 @@
  *  - A PHP helper that resolves hashed asset filenames from the Vite manifest.
  *  - An 'kui/assets' snippet for enqueueing CSS + JS from layouts.
  *
- * @see  blueprints/blocks/accordion.yml   Block definition (Panel UI).
- * @see  snippets/blocks/accordion.twig    Block dispatcher (chooses variant).
+ * @see  blueprints/blocks/kui-accordion.yml   Block definition (Panel UI).
+ * @see  snippets/blocks/kui-accordion.twig    Block dispatcher (chooses variant).
  * @see  snippets/blocks/_accordion_base.twig  Shared Twig layout (not a block).
  */
 
@@ -64,15 +64,15 @@ Kirby::plugin('kui/components', [
     'blueprints' => [
         // Shared field mixins — extend these in any blueprint with:
         //   myfield:
-        //     extends: fields/html_id
-        'fields/html_id'       => __DIR__ . '/blueprints/fields/html_id.yml',
-        'fields/css_classes'   => __DIR__ . '/blueprints/fields/css_classes.yml',
+        //     extends: fields/kui-html_id
+        'fields/kui-html_id'       => __DIR__ . '/blueprints/fields/kui-html_id.yml',
+        'fields/kui-css_classes'   => __DIR__ . '/blueprints/fields/kui-css_classes.yml',
 
         // Block blueprints — each is selectable in any `type: blocks` field.
-        'blocks/accordion'     => __DIR__ . '/blueprints/blocks/accordion.yml',
-        'blocks/button'        => __DIR__ . '/blueprints/blocks/button.yml',
-        'blocks/carousel'      => __DIR__ . '/blueprints/blocks/carousel.yml',
-        'blocks/select'        => __DIR__ . '/blueprints/blocks/select.yml',
+        'blocks/kui-accordion'     => __DIR__ . '/blueprints/blocks/kui-accordion.yml',
+        'blocks/kui-button'        => __DIR__ . '/blueprints/blocks/kui-button.yml',
+        'blocks/kui-carousel'      => __DIR__ . '/blueprints/blocks/kui-carousel.yml',
+        'blocks/kui-select'        => __DIR__ . '/blueprints/blocks/kui-select.yml',
     ],
 
     // ── Snippets ─────────────────────────────────────────────────────────────
@@ -85,31 +85,31 @@ Kirby::plugin('kui/components', [
 
     'snippets' => [
         // Block entry point — Kirby calls this automatically when rendering blocks.
-        'blocks/accordion'        => __DIR__ . '/snippets/blocks/accordion.twig',
-        'blocks/button'           => __DIR__ . '/snippets/blocks/button.twig',
+        'blocks/kui-accordion'        => __DIR__ . '/snippets/blocks/kui-accordion.twig',
+        'blocks/kui-button'           => __DIR__ . '/snippets/blocks/kui-button.twig',
 
-        // Variants — loaded by accordion.twig via {% include '@ui/…' %}.
-        'blocks/accordion_simple' => __DIR__ . '/snippets/blocks/accordion_simple.twig',
-        'blocks/accordion_rich'   => __DIR__ . '/snippets/blocks/accordion_rich.twig',
+        // Variants — loaded by kui-accordion.twig via {% include '@ui/…' %}.
+        'blocks/kui-accordion_simple' => __DIR__ . '/snippets/blocks/kui-accordion_simple.twig',
+        'blocks/kui-accordion_rich'   => __DIR__ . '/snippets/blocks/kui-accordion_rich.twig',
 
         // Base layout — loaded by variants via {% embed '@ui/…' %}.
         // The underscore prefix signals it is internal (not a public block).
-        'blocks/_accordion_base'  => __DIR__ . '/snippets/blocks/_accordion_base.twig',
+        'blocks/_kui-accordion_base'  => __DIR__ . '/snippets/blocks/_kui-accordion_base.twig',
 
         // Button primitive — snippet partial (not a block).
-        // Include via {% include '@ui/_button.twig' with { variant: '…', label: '…' } %}.
-        'blocks/_button'          => __DIR__ . '/snippets/blocks/_button.twig',
+        // Include via {% include '@ui/_kui-button.twig' with { variant: '…', label: '…' } %}.
+        'blocks/_kui-button'          => __DIR__ . '/snippets/blocks/_kui-button.twig',
 
         // Carousel widget — block dispatcher, default variant, and internal base.
-        'blocks/carousel'         => __DIR__ . '/snippets/blocks/carousel.twig',
-        'blocks/carousel_default' => __DIR__ . '/snippets/blocks/carousel_default.twig',
-        'blocks/_carousel_base'   => __DIR__ . '/snippets/blocks/_carousel_base.twig',
+        'blocks/kui-carousel'         => __DIR__ . '/snippets/blocks/kui-carousel.twig',
+        'blocks/kui-carousel_default' => __DIR__ . '/snippets/blocks/kui-carousel_default.twig',
+        'blocks/_kui-carousel_base'   => __DIR__ . '/snippets/blocks/_kui-carousel_base.twig',
 
         // Select widget — block dispatcher, variants, and internal base.
-        'blocks/select'           => __DIR__ . '/snippets/blocks/select.twig',
-        'blocks/select_simple'    => __DIR__ . '/snippets/blocks/select_simple.twig',
-        'blocks/select_grouped'   => __DIR__ . '/snippets/blocks/select_grouped.twig',
-        'blocks/_select_base'     => __DIR__ . '/snippets/blocks/_select_base.twig',
+        'blocks/kui-select'           => __DIR__ . '/snippets/blocks/kui-select.twig',
+        'blocks/kui-select_simple'    => __DIR__ . '/snippets/blocks/kui-select_simple.twig',
+        'blocks/kui-select_grouped'   => __DIR__ . '/snippets/blocks/kui-select_grouped.twig',
+        'blocks/_kui-select_base'     => __DIR__ . '/snippets/blocks/_kui-select_base.twig',
 
         // Asset loader — call snippet('kui/assets') in your layout <head>.
         'kui/assets'              => __DIR__ . '/snippets/ui-library/assets.php',

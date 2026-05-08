@@ -12,7 +12,7 @@
     disabled    ← block.disabled (bool)
     extra_class ← block.extra_class
 #}
-{% include '@ui/_button.twig' with {
+{% include '@ui/_kui-button.twig' with {
 	variant: block.variant.value is not empty ? block.variant.value : 'default',
 	size: block.size.value is not empty ? block.size.value : 'default',
 	label: block.label.value,
