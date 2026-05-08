@@ -34,6 +34,7 @@ tabs:
               - text
               - list
               - button
+              - carousel
 
   settings:
     label: Settings

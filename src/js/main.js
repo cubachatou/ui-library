@@ -7,9 +7,11 @@
 
 import "../scss/main.scss";
 import { initAccordions } from "./accordion.js";
+import { initCarousels } from "./carousel.js";
 import { initSelects } from "./select.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 	initAccordions();
+	initCarousels();
 	initSelects();
 });

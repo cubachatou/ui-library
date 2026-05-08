@@ -1,0 +1,74 @@
+title: Carousel
+icon: image
+preview: fields
+wysiwyg: true
+
+tabs:
+  content:
+    label: Content
+    fields:
+      slides:
+        type: structure
+        label: Slides
+        sortable: true
+        fields:
+          image:
+            type: files
+            label: Image
+            multiple: false
+
+          caption:
+            type: text
+            label: Caption
+
+          link_url:
+            type: url
+            label: Link URL
+
+      style:
+        type: select
+        label: Display Style
+        default: default
+        width: 1/2
+        options:
+          - value: default
+            text: Default
+
+  settings:
+    label: Settings
+    fields:
+      show_navigation:
+        type: toggle
+        label: Show Navigation
+        default: false
+        width: 1/2
+        help: "Renders previous/next arrow buttons."
+
+      show_pagination:
+        type: toggle
+        label: Show Pagination
+        default: false
+        width: 1/2
+        help: "Renders clickable dot indicators."
+
+      autoplay:
+        type: toggle
+        label: Autoplay
+        default: false
+        width: 1/2
+        help: "Automatically advance slides."
+
+      loop:
+        type: toggle
+        label: Loop
+        default: false
+        width: 1/2
+        help: "Infinite loop — wraps from last slide back to first."
+
+      html_id:
+        extends: fields/html_id
+        width: 1/2
+
+      css_classes:
+        extends: fields/css_classes
+        width: 1/2

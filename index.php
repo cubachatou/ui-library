@@ -70,7 +70,10 @@ Kirby::plugin('kui/components', [
 
         // Block blueprints — each is selectable in any `type: blocks` field.
         'blocks/accordion'     => __DIR__ . '/blueprints/blocks/accordion.yml',
-        'blocks/button'        => __DIR__ . '/blueprints/blocks/button.yml',        'blocks/select'        => __DIR__ . '/blueprints/blocks/select.yml',    ],
+        'blocks/button'        => __DIR__ . '/blueprints/blocks/button.yml',
+        'blocks/carousel'      => __DIR__ . '/blueprints/blocks/carousel.yml',
+        'blocks/select'        => __DIR__ . '/blueprints/blocks/select.yml',
+    ],
 
     // ── Snippets ─────────────────────────────────────────────────────────────
     //
@@ -96,6 +99,11 @@ Kirby::plugin('kui/components', [
         // Button primitive — snippet partial (not a block).
         // Include via {% include '@ui/_button.twig' with { variant: '…', label: '…' } %}.
         'blocks/_button'          => __DIR__ . '/snippets/blocks/_button.twig',
+
+        // Carousel widget — block dispatcher, default variant, and internal base.
+        'blocks/carousel'         => __DIR__ . '/snippets/blocks/carousel.twig',
+        'blocks/carousel_default' => __DIR__ . '/snippets/blocks/carousel_default.twig',
+        'blocks/_carousel_base'   => __DIR__ . '/snippets/blocks/_carousel_base.twig',
 
         // Select widget — block dispatcher, variants, and internal base.
         'blocks/select'           => __DIR__ . '/snippets/blocks/select.twig',

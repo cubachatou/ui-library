@@ -1,0 +1,87 @@
+// =============================================================================
+// _carousel.scss — BEM styles for the Carousel component.
+//
+// Swiper's own CSS (via `import 'swiper/css'` in carousel.js) handles the core
+// slide mechanics. This file provides:
+//   1. The BEM wrapper and Swiper CSS custom property overrides.
+//   2. The caption overlay element.
+//
+// Structure mirrors the HTML:
+//   .kui-carousel                        (data-kui-carousel)
+//   └─ .swiper                           (data-kui-carousel-swiper, Swiper root)
+//      ├─ .swiper-wrapper
+//      │  └─ .swiper-slide               (data-kui-carousel-slide)
+//      │     ├─ .kui-carousel__image
+//      │     ├─ .kui-carousel__caption
+//      │     └─ .kui-carousel__link
+//      ├─ .swiper-button-prev            (data-kui-carousel-prev)
+//      ├─ .swiper-button-next            (data-kui-carousel-next)
+//      └─ .swiper-pagination             (data-kui-carousel-pagination-el)
+//
+// Rule: never use [data-*] selectors here — those attributes are JS-only hooks.
+// =============================================================================
+
+@use 'tokens' as *;
+
+// ── Block ─────────────────────────────────────────────────────────────────────
+.kui-carousel {
+  position: relative;
+  width: 100%;
+
+  // Override Swiper CSS custom properties scoped to this component.
+  // The #{} interpolation is required to embed SCSS variables into
+  // CSS custom property values.
+  --swiper-theme-color: #{$color-focus-ring};
+  --swiper-navigation-color: #{$color-text};
+  --swiper-navigation-size: 1.5rem;
+  --swiper-pagination-color: #{$color-focus-ring};
+  --swiper-pagination-bullet-inactive-color: #{$color-border};
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-bullet-size: 0.5rem;
+  --swiper-pagination-bullet-horizontal-gap: 0.25rem;
+}
+
+// ── Slide ─────────────────────────────────────────────────────────────────────
+.swiper-slide {
+  // position: relative anchors the absolute-positioned caption overlay.
+  // min-height ensures text-only slides (no image) are visible.
+  position: relative;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 12rem;
+}
+
+// ── Image ─────────────────────────────────────────────────────────────────────
+.kui-carousel__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// ── Link wrapper ──────────────────────────────────────────────────────────────
+.kui-carousel__link {
+  display: contents;
+  color: inherit;
+  text-decoration: none;
+}
+
+// ── Caption overlay ───────────────────────────────────────────────────────────
+.kui-carousel__caption {
+  position: absolute;
+  text-align: center;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-sm $space-md;
+  background: oklch(10% 0.005 255 / 0.65);
+  color: oklch(95% 0.004 255);
+  font-size: $font-size-sm;
+  line-height: $line-height-base;
+  margin: 0;
+  pointer-events: none;
+}

@@ -1,0 +1,64 @@
+{#
+  _carousel_base.twig — Base carousel layout (internal partial).
+
+  Expected variables (passed via {% embed %} with {...}):
+    slides          {StructureCollection}  Kirby structure items for each slide.
+    wrapper_id      {string}               HTML id attribute for the root <div>.
+    extra_class     {string}               Extra CSS classes appended to root element.
+    show_navigation {bool}                 Render previous/next arrow buttons.
+    show_pagination {bool}                 Render clickable dot indicators.
+    autoplay        {bool}                 Pass autoplay signal to JS via data-attr.
+    loop            {bool}                 Pass loop signal to JS via data-attr.
+
+  Overridable blocks:
+    {% block slide_content %} — Inner content of each slide (image, caption, link…)
+
+  JS hook attributes (never remove or rename):
+    data-kui-carousel                — Root element; JS reads config data-attrs here.
+    data-kui-carousel-swiper         — The .swiper element Swiper is initialised on.
+    data-kui-carousel-slide          — Individual slide wrapper.
+    data-kui-carousel-prev           — Previous button (used by Navigation module).
+    data-kui-carousel-next           — Next button (used by Navigation module).
+    data-kui-carousel-pagination-el  — Pagination container (used by Pagination module).
+#}
+
+{% set _id = wrapper_id is defined and wrapper_id ? wrapper_id : 'carousel' %}
+{% set _extra = extra_class is defined and extra_class ? ' ' ~ extra_class : '' %}
+{% set _nav = show_navigation is defined and show_navigation %}
+{% set _pag = show_pagination is defined and show_pagination %}
+{% set _auto = autoplay is defined and autoplay %}
+{% set _loop = loop is defined and loop %}
+
+<div
+	class="kui-carousel{{ _extra }}"
+	id="{{ _id }}"
+	data-kui-carousel
+	data-kui-carousel-navigation="{{ _nav ? 'true' : 'false' }}"
+	data-kui-carousel-pagination="{{ _pag ? 'true' : 'false' }}"
+	data-kui-carousel-autoplay="{{ _auto ? 'true' : 'false' }}"
+	data-kui-carousel-loop="{{ _loop ? 'true' : 'false' }}">
+	<div class="swiper" data-kui-carousel-swiper>
+		<div class="swiper-wrapper">
+			{% for slide in slides %}
+				<div class="swiper-slide" data-kui-carousel-slide>
+					{% block slide_content %}
+						{% if slide.caption.isNotEmpty %}
+							<p class="kui-carousel__caption">
+								<span>{{ slide.caption }}</span>
+							</p>
+						{% endif %}
+					{% endblock %}
+				</div>
+			{% endfor %}
+		</div>
+
+		{% if _nav %}
+			<div class="swiper-button-prev" data-kui-carousel-prev></div>
+			<div class="swiper-button-next" data-kui-carousel-next></div>
+		{% endif %}
+
+		{% if _pag %}
+			<div class="swiper-pagination" data-kui-carousel-pagination-el></div>
+		{% endif %}
+	</div>
+</div>

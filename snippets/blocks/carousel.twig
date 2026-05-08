@@ -1,0 +1,15 @@
+{#
+  carousel.twig — Variant dispatcher.
+
+  Reads the `style` field and delegates to the correct variant template.
+  To add a new variant: add its value to the blueprint style select and
+  a new branch here. No other files need to change.
+#}
+
+{% set style = block.style.value %}
+
+{% if style == 'default' %}
+	{% include '@ui/carousel_default.twig' %}
+{% else %}
+	{% include '@ui/carousel_default.twig' %}
+{% endif %}

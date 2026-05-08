@@ -1,0 +1,54 @@
+{#
+  carousel_default.twig — Default carousel variant.
+
+  Resolves block fields and delegates to the base template via {% embed %}.
+  Overrides slide_content to render image, caption, and optional link.
+
+  To create a new variant: copy this file, rename it, change the slide_content
+  block, add a value to the blueprint's style select, and handle it in
+  carousel.twig. No base template, JS, or SCSS needs to change.
+#}
+
+{% set _wrapper_id  = block.html_id.isNotEmpty ? block.html_id.value : 'carousel' %}
+{% set _extra_class = block.css_classes.value %}
+{% set _slides      = block.slides.toStructure() %}
+{% set _show_nav    = block.show_navigation.toBool %}
+{% set _show_pag    = block.show_pagination.toBool %}
+{% set _autoplay    = block.autoplay.toBool %}
+{% set _loop        = block.loop.toBool %}
+
+{% embed '@ui/_carousel_base.twig'
+	with {
+		slides: _slides,
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class,
+		show_navigation: _show_nav,
+		show_pagination: _show_pag,
+		autoplay: _autoplay,
+		loop: _loop
+	}
+%}
+	{% block slide_content %}
+		{% set _img = slide.image.toFile %}
+		{% set _has_link = slide.link_url.isNotEmpty %}
+
+		{% if _has_link %}<a href="{{ slide.link_url }}" class="kui-carousel__link">{% endif %}
+
+		{% if _img %}
+			<img
+				class="kui-carousel__image"
+				src="{{ _img.url }}"
+				alt="{{ _img.alt }}"
+				width="{{ _img.width }}"
+				height="{{ _img.height }}"
+				loading="lazy"
+			>
+		{% endif %}
+
+		{% if slide.caption.isNotEmpty %}
+			<p class="kui-carousel__caption"><span>{{- slide.caption -}}</span></p>
+		{% endif %}
+
+		{% if _has_link %}</a>{% endif %}
+	{% endblock %}
+{% endembed %}
