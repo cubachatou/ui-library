@@ -1,0 +1,16 @@
+{#
+  kui-badge.twig — Kirby block wrapper for the _kui-badge.twig snippet.
+
+  Panel fields map 1-to-1 with snippet parameters. This block lets the
+  badge primitive be used anywhere a Kirby blocks field accepts it —
+  inside doc demo fields or any page body.
+#}
+{% include '@ui/_kui-badge.twig' with {
+	variant: block.variant.value is not empty ? block.variant.value : 'default',
+	label: block.label.value,
+	href: block.href.value,
+	extra_class: block.extra_class.value,
+	attrs: block.attrs.value,
+	icon_before: block.icon_before.value,
+	icon_after: block.icon_after.value
+} %}

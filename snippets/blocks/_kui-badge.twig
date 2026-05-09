@@ -1,0 +1,70 @@
+{#
+  _badge.twig — Badge primitive (snippet partial, not a block).
+
+  Include this snippet wherever you need an inline label:
+    {% include '@ui/_kui-badge.twig' with { label: 'New', variant: 'default' } %}
+
+  Parameters:
+    variant      {string}  Variant class modifier. One of:
+                             default | secondary | destructive | outline | ghost
+                           Defaults to 'default'.
+    label        {string}  Visible badge text. Required.
+    href         {string}  If set, renders the root element as <a href="…">.
+                           Omit for a non-interactive <span>.
+    target       {string}  Link target attribute. Only used when href is set.
+                           Defaults to '_self'.
+    extra_class  {string}  Additional CSS classes appended to the root element.
+                           Use for custom color overrides or one-off BEM modifiers.
+    attrs        {string}  Raw HTML attribute string appended as-is to the root element.
+    icon_before  {string}  SVG or inline HTML rendered before the label.
+    icon_after   {string}  SVG or inline HTML rendered after the label.
+
+  Spinner:
+    Pass a <span class="kui-badge__spinner"></span> inside icon_before or
+    icon_after to get a CSS-animated loading indicator. No JS required.
+
+  Accessibility:
+    Anchor badges (href set): ensure the label text identifies the destination
+    out of context (WCAG 2.4.4). Supply an aria-label via attrs if not.
+    Icon slots receive aria-hidden="true" automatically; the label carries
+    the accessible name.
+#}
+
+{% set _variant     = variant     is defined and variant     ? variant     : 'default' %}
+{% set _label       = label       is defined                 ? label       : ''        %}
+{% set _href        = href        is defined and href        ? href        : ''        %}
+{% set _target      = target      is defined and target      ? target      : '_self'   %}
+{% set _extra       = extra_class is defined and extra_class ? ' ' ~ extra_class : '' %}
+{% set _attrs       = attrs       is defined and attrs       ? attrs       : ''        %}
+{% set _icon_before = icon_before is defined and icon_before ? icon_before : ''        %}
+{% set _icon_after  = icon_after  is defined and icon_after  ? icon_after  : ''        %}
+
+{% set _class = 'kui-badge kui-badge--' ~ _variant ~ _extra %}
+
+{%- if _href -%}
+<a
+	class="{{ _class }}"
+	href="{{ _href }}"
+	target="{{ _target }}"
+	{{- _attrs ? ' ' ~ _attrs|raw : '' -}}
+>
+{%- else -%}
+<span
+	class="{{ _class }}"
+	{{- _attrs ? ' ' ~ _attrs|raw : '' -}}
+>
+{%- endif -%}
+	{%- if _icon_before -%}
+		<span class="kui-badge__icon kui-badge__icon--before" aria-hidden="true">{{ _icon_before|raw }}</span>
+	{%- endif -%}
+	{%- if _label -%}
+		<span class="kui-badge__label">{{ _label }}</span>
+	{%- endif -%}
+	{%- if _icon_after -%}
+		<span class="kui-badge__icon kui-badge__icon--after" aria-hidden="true">{{ _icon_after|raw }}</span>
+	{%- endif -%}
+{%- if _href -%}
+</a>
+{%- else -%}
+</span>
+{%- endif -%}

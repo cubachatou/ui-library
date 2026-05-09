@@ -5,7 +5,9 @@
 // individually so partials remain self-contained and portable.
 // =============================================================================
 
+@use 'root';
 @use 'accordion';
+@use 'badge';
 @use 'button';
 @use 'carousel';
 @use 'select';

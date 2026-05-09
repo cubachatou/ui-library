@@ -15,8 +15,9 @@
 //   .kui-button--link         No border, no fill; text-link appearance.
 //
 // Sizes (--modifier on root; no modifier = default size):
-//   .button--sm           14px text, compact padding.
-//   .button--lg           16px text, generous padding.
+//   .button--xs           24px height, 8px padding-inline.
+//   .button--sm           28px height, 10px padding-inline.
+//   .button--lg           36px height, 10px padding-inline.
 //   .button--icon         Square; sized to default height. Requires aria-label.
 //
 // Rules:
@@ -28,10 +29,11 @@
 
 @use 'tokens' as *;
 
-$_btn-height-default: 2.375rem; //  38px
-$_btn-height-sm: 2rem; //  32px
-$_btn-height-lg: 2.75rem; //  44px
-$_btn-icon-size: 2.375rem; //  38px square — matches default height
+$_btn-height-xs: 1.5rem; //  24px
+$_btn-height-sm: 1.75rem; //  28px
+$_btn-height-default: 2rem; //  32px
+$_btn-height-lg: 2.25rem; //  36px
+$_btn-icon-size: 2rem; //  32px square — matches default height
 
 // ── Base ──────────────────────────────────────────────────────────────────────
 
@@ -41,7 +43,7 @@ $_btn-icon-size: 2.375rem; //  38px square — matches default height
   justify-content: center;
   gap: $space-xs;
   height: $_btn-height-default;
-  padding: 0 1rem;
+  padding: 0 0.625rem;
   border: $border-width solid transparent;
   border-radius: $border-radius-sm;
   cursor: pointer;
@@ -58,7 +60,7 @@ $_btn-icon-size: 2.375rem; //  38px square — matches default height
     opacity $transition-base;
 
   &:focus-visible {
-    outline: 2px solid $color-focus-ring;
+    outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
 
@@ -94,48 +96,47 @@ $_btn-icon-size: 2.375rem; //  38px square — matches default height
   // Near-black — deliberately not Active Blue (see DESIGN.md § 2: "Active Blue
   // is infrastructure only — never a background fill, never a call-to-action").
   &--default {
-    background-color: $color-surface;
-    border-color: $color-border;
-    color: $color-text;
+    background-color: var(--background);
+    border-color: var(--border);
+    color: var(--foreground);
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
-      background-color: $color-surface-hover;
-      border-color: $color-border;
+      background-color: var(--accent);
+      border-color: var(--border);
     }
   }
 
   // ── Variant: destructive ───────────────────────────────────────────────────
   &--destructive {
-    background-color: $color-destructive;
-    border-color: $color-destructive;
-    color: $color-text;
+    background-color: color-mix(in oklab, var(--destructive) 20%, transparent);
+    border-color: transparent;
+    color: var(--destructive);
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
-      background-color: $color-destructive-hover;
-      border-color: $color-destructive-hover;
+      background-color: color-mix(in oklab, var(--destructive) 30%, transparent);
     }
   }
 
   // ── Variant: secondary ─────────────────────────────────────────────────────
   &--secondary {
-    background-color: $color-text;
-    border-color: $color-border;
-    color: $color-surface;
+    background-color: var(--primary);
+    border-color: var(--border);
+    color: var(--primary-foreground);
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
-      background-color: $color-text-hover;
-      border-color: $color-border;
+      background-color: var(--foreground);
+      border-color: var(--border);
     }
   }
 
   // ── Variant: outline ──────────────────────────────────────────────────────
   &--outline {
     background-color: transparent;
-    border-color: $color-border;
-    color: $color-text;
+    border-color: var(--border);
+    color: var(--foreground);
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
-      background-color: $color-surface;
+      background-color: var(--accent);
     }
   }
 
@@ -143,11 +144,11 @@ $_btn-icon-size: 2.375rem; //  38px square — matches default height
   &--ghost {
     background-color: transparent;
     border-color: transparent;
-    color: $color-text;
+    color: var(--foreground);
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
-      background-color: $color-surface;
-      border-color: $color-border;
+      background-color: var(--accent);
+      border-color: var(--border);
     }
   }
 
@@ -157,14 +158,14 @@ $_btn-icon-size: 2.375rem; //  38px square — matches default height
   &--link {
     background-color: transparent;
     border-color: transparent;
-    color: $color-focus-ring;
+    color: var(--link);
     height: auto;
     padding: 0;
     text-decoration: underline;
     text-underline-offset: 3px;
 
     &:hover:not(:disabled):not([aria-disabled='true']) {
-      color: $color-focus-ring-hover;
+      color: color-mix(in oklab, var(--link) 70%, black);
     }
 
     &:focus-visible {
@@ -172,17 +173,24 @@ $_btn-icon-size: 2.375rem; //  38px square — matches default height
     }
   }
 
+  // ── Size: xs ──────────────────────────────────────────────────────────────
+  &--xs {
+    height: $_btn-height-xs;
+    padding: 0 0.5rem;
+    font-size: $font-size-sm;
+  }
+
   // ── Size: sm ──────────────────────────────────────────────────────────────
   &--sm {
     height: $_btn-height-sm;
-    padding: 0 0.75rem;
+    padding: 0 0.625rem;
     font-size: $font-size-sm;
   }
 
   // ── Size: lg ──────────────────────────────────────────────────────────────
   &--lg {
     height: $_btn-height-lg;
-    padding: 0 1.5rem;
+    padding: 0 0.625rem;
     font-size: $font-size-base;
   }
 

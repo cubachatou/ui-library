@@ -1,0 +1,47 @@
+title: Badge
+icon: tag
+preview: fields
+wysiwyg: true
+
+fields:
+  label:
+    type: text
+    label: Label
+    width: 1/2
+
+  variant:
+    type: select
+    label: Variant
+    default: default
+    width: 1/2
+    options:
+      - { value: default, text: Default }
+      - { value: secondary, text: Secondary }
+      - { value: destructive, text: Destructive }
+      - { value: outline, text: Outline }
+      - { value: ghost, text: Ghost }
+
+  href:
+    type: text
+    label: Link href (renders as <a> when set)
+    width: 1/2
+
+  extra_class:
+    type: text
+    label: Extra CSS classes
+    width: 1/2
+
+  attrs:
+    type: text
+    label: HTML attributes (e.g. role="status")
+    width: 1/2
+
+  icon_before:
+    type: textarea
+    label: Icon before label (SVG or HTML)
+    width: 1/2
+
+  icon_after:
+    type: textarea
+    label: Icon after label (SVG or HTML)
+    width: 1/2

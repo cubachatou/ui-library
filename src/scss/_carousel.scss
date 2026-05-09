@@ -29,13 +29,13 @@
   width: 100%;
 
   // Override Swiper CSS custom properties scoped to this component.
-  // The #{} interpolation is required to embed SCSS variables into
-  // CSS custom property values.
-  --swiper-theme-color: #{$color-focus-ring};
-  --swiper-navigation-color: #{$color-text};
+  // Values reference the library's own CSS custom properties directly —
+  // no SCSS interpolation needed since these are CSS-to-CSS assignments.
+  --swiper-theme-color: var(--link);
+  --swiper-navigation-color: var(--foreground);
   --swiper-navigation-size: 1.5rem;
-  --swiper-pagination-color: #{$color-focus-ring};
-  --swiper-pagination-bullet-inactive-color: #{$color-border};
+  --swiper-pagination-color: var(--link);
+  --swiper-pagination-bullet-inactive-color: var(--border);
   --swiper-pagination-bullet-inactive-opacity: 1;
   --swiper-pagination-bullet-size: 0.5rem;
   --swiper-pagination-bullet-horizontal-gap: 0.25rem;

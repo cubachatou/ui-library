@@ -8,18 +8,6 @@
 // component files are self-contained and tokens are not duplicated in output.
 // =============================================================================
 
-// ── Colors ───────────────────────────────────────────────────────────────────
-$color-surface: oklch(14% 0.003 255);
-$color-surface-hover: oklch(21% 0.004 255);
-$color-border: oklch(28% 0.005 255);
-$color-text: oklch(90% 0.004 255);
-$color-text-hover: oklch(100% 0.005 255);
-$color-text-muted: oklch(54% 0.005 255);
-$color-focus-ring: oklch(57.311% 0.21458 258.263);
-$color-focus-ring-hover: oklch(39.107% 0.16074 260.151);
-$color-destructive: oklch(59.013% 0.20533 26.197);
-$color-destructive-hover: oklch(52.301% 0.19793 27.578);
-
 // ── Spacing ───────────────────────────────────────────────────────────────────
 $space-xs: 0.25rem; //  4px
 $space-sm: 0.5rem; //  8px

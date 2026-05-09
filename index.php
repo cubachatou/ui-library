@@ -70,6 +70,7 @@ Kirby::plugin('kui/components', [
 
         // Block blueprints — each is selectable in any `type: blocks` field.
         'blocks/kui-accordion'     => __DIR__ . '/blueprints/blocks/kui-accordion.yml',
+        'blocks/kui-badge'         => __DIR__ . '/blueprints/blocks/kui-badge.yml',
         'blocks/kui-button'        => __DIR__ . '/blueprints/blocks/kui-button.yml',
         'blocks/kui-carousel'      => __DIR__ . '/blueprints/blocks/kui-carousel.yml',
         'blocks/kui-select'        => __DIR__ . '/blueprints/blocks/kui-select.yml',
@@ -95,6 +96,13 @@ Kirby::plugin('kui/components', [
         // Base layout — loaded by variants via {% embed '@ui/…' %}.
         // The underscore prefix signals it is internal (not a public block).
         'blocks/_kui-accordion_base'  => __DIR__ . '/snippets/blocks/_kui-accordion_base.twig',
+
+        // Badge primitive — snippet partial (not a block).
+        // Include via {% include '@ui/_kui-badge.twig' with { variant: '…', label: '…' } %}.
+        'blocks/_kui-badge'           => __DIR__ . '/snippets/blocks/_kui-badge.twig',
+
+        // Badge block — renders a badge inside any Kirby blocks field.
+        'blocks/kui-badge'            => __DIR__ . '/snippets/blocks/kui-badge.twig',
 
         // Button primitive — snippet partial (not a block).
         // Include via {% include '@ui/_kui-button.twig' with { variant: '…', label: '…' } %}.

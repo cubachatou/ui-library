@@ -18,21 +18,21 @@
 .kui-accordion {
   width: 100%;
   font-family: $font-family-base;
-  background-color: $color-surface;
-  color: $color-text;
+  background-color: var(--background);
+  color: var(--foreground);
 
   // ── Modifier: bordered variant ──────────────────────────────────────────
   // Wraps the full component in a 1 px border with rounded corners.
   // Apply via the css_classes field: accordion--bordered
   &--bordered {
-    border: $border-width solid $color-border;
+    border: $border-width solid var(--border);
     border-radius: $border-radius-lg;
     overflow: hidden;
   }
 
   // ── Element: __item ────────────────────────────────────────────────────────
   &__item {
-    border-bottom: $border-width solid $color-border;
+    border-bottom: $border-width solid var(--border);
 
     &:last-child {
       border-bottom: none;
@@ -59,7 +59,7 @@
     font-family: inherit;
     font-size: $font-size-base;
     font-weight: $font-weight-semibold;
-    color: $color-text;
+    color: var(--foreground);
     text-align: left;
     transition:
       text-decoration-color $transition-base,
@@ -71,7 +71,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid $color-focus-ring;
+      outline: 2px solid var(--ring);
       outline-offset: -2px;
     }
 
@@ -95,7 +95,7 @@
       mask-repeat: no-repeat;
       mask-position: center;
       mask-size: contain;
-      background-color: $color-text;
+      background-color: var(--foreground);
       transition: transform $transition-base;
     }
 
@@ -144,7 +144,7 @@
   &__content {
     padding: $space-md $space-lg $space-lg;
     font-size: $font-size-base;
-    color: $color-text;
+    color: var(--foreground);
     line-height: $line-height-base;
   }
 }

@@ -44,33 +44,33 @@
   gap: $space-sm;
   width: 100%;
   padding: $space-sm $space-md;
-  background-color: $color-surface;
-  border: $border-width solid $color-border;
+  background-color: var(--background);
+  border: $border-width solid var(--input);
   border-radius: $border-radius-sm;
   cursor: pointer;
   font-family: inherit;
   font-size: $font-size-base;
-  color: $color-text;
+  color: var(--foreground);
   text-align: left;
   transition:
     border-color $transition-fast,
     box-shadow $transition-fast;
 
   &:hover:not([disabled]) {
-    border-color: $color-text-muted;
+    border-color: var(--muted-foreground);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-focus-ring;
+    outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
 
   // Invalid state — red border, driven by aria-invalid on the trigger itself.
   &[aria-invalid='true'] {
-    border-color: $color-destructive;
+    border-color: var(--destructive);
 
     &:focus-visible {
-      outline-color: $color-destructive;
+      outline-color: var(--destructive);
     }
   }
 
@@ -89,13 +89,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: $color-text-muted; // placeholder colour; JS swaps to $color-text on selection
+  color: var(--muted-foreground); // placeholder colour
 
   // When a real value is selected the JS sets data-placeholder="false"
   // (or simply the text changes); SCSS can't differentiate text content, so
   // JS also adds [data-has-value] on the root to change the text colour.
   .kui-select[data-has-value] & {
-    color: $color-text;
+    color: var(--foreground);
   }
 }
 
@@ -104,7 +104,7 @@
   flex-shrink: 0;
   width: 1rem;
   height: 1rem;
-  color: $color-text-muted;
+  color: var(--muted-foreground);
   transition: transform $transition-base;
 
   // Rotate when open.
@@ -116,7 +116,7 @@
 // ── Error message ─────────────────────────────────────────────────────────────
 .kui-select__error {
   font-size: $font-size-sm;
-  color: $color-destructive;
+  color: var(--destructive);
   line-height: $line-height-base;
 }
 
@@ -129,8 +129,8 @@
   z-index: 50;
   max-height: 18rem; // ~288px — enables scrolling for long lists
   overflow-y: auto;
-  background-color: $color-surface;
-  border: $border-width solid $color-border;
+  background-color: var(--background);
+  border: $border-width solid var(--border);
   border-radius: $border-radius-sm;
   padding: $space-xs 0;
 
@@ -155,7 +155,7 @@
   padding: $space-xs $space-md;
   font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
-  color: $color-text-muted;
+  color: var(--muted-foreground);
   cursor: default;
   user-select: none;
 }
@@ -167,19 +167,19 @@
   align-items: center;
   padding: $space-sm $space-md;
   font-size: $font-size-base;
-  color: $color-text;
+  color: var(--foreground);
   user-select: none;
   transition: background-color $transition-fast;
 
   // Hover / keyboard-focus highlight (managed via aria-activedescendant in JS,
   // but we also handle the pointer hover here for mouse users).
   &:hover:not([aria-disabled='true']) {
-    background-color: $color-surface-hover;
+    background-color: var(--accent);
   }
 
   // Currently focused item (JS adds [data-focused] to the active descendant).
   &[data-focused] {
-    background-color: $color-surface-hover;
+    background-color: var(--accent);
     outline: none;
   }
 
@@ -200,5 +200,5 @@
 .kui-select__separator {
   height: $border-width;
   margin: $space-xs 0;
-  background-color: $color-border;
+  background-color: var(--border);
 }

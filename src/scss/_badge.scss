@@ -1,0 +1,133 @@
+// =============================================================================
+// _badge.scss — BEM styles for the badge component.
+//
+// Structure:
+//   .kui-badge
+//   ├─ .kui-badge__label
+//   ├─ .kui-badge__icon  (.kui-badge__icon--before / .kui-badge__icon--after)
+//   └─ .kui-badge__spinner  (CSS-animated loader, passed via an icon slot)
+//
+// Variants (--modifier on root):
+//   .kui-badge--default      Near-white fill; maximum contrast against dark surfaces.
+//   .kui-badge--secondary    Dark surface fill, bordered; a quiet label.
+//   .kui-badge--destructive  Semantic red for error or irreversible-action states.
+//   .kui-badge--outline      Transparent fill, bordered.
+//   .kui-badge--ghost        No border, no fill; muted text only.
+//
+// Rules:
+//   - Zero JS. Display-only element.
+//   - No shadows. Border-radius: 999px pill.
+//   - Root element is <span> (non-interactive) or <a> (when href is supplied).
+//   - Anchor badges gain hover + focus states only; no button-state variants.
+// =============================================================================
+
+@use 'tokens' as *;
+
+// ── Base ──────────────────────────────────────────────────────────────────────
+
+.kui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  padding: 3px 10px;
+  border: $border-width solid transparent;
+  border-radius: 999px;
+  font-family: $font-family-base;
+  font-size: 0.75rem;
+  font-weight: $font-weight-semibold;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+
+  // Anchor state — hover + focus only; the badge never behaves like a button
+  &[href] {
+    cursor: pointer;
+    transition: opacity $transition-fast;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+  }
+
+  // ── __label ──────────────────────────────────────────────────────────────
+  &__label {
+    // intentionally empty — structural wrapper only
+  }
+
+  // ── __icon ───────────────────────────────────────────────────────────────
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 0.875em;
+    height: 0.875em;
+
+    svg {
+      width: 0.875em;
+      height: 0.875em;
+    }
+  }
+
+  // ── __spinner ─────────────────────────────────────────────────────────────
+  // CSS-animated loading indicator. Not injected by the snippet —
+  // pass as HTML inside an icon slot:
+  //   icon_before: '<span class="kui-badge__spinner"></span>'
+  &__spinner {
+    display: inline-block;
+    width: 0.75em;
+    height: 0.75em;
+    border: 1.5px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: kui-badge-spin 0.65s linear infinite;
+    flex-shrink: 0;
+  }
+
+  // ── Variant: default ──────────────────────────────────────────────────────
+  // Near-white fill — the highest-contrast badge on dark surfaces.
+  // A subtle border keeps the pill legible against light backgrounds too.
+  &--default {
+    background-color: var(--primary);
+    border-color: var(--border);
+    color: var(--primary-foreground);
+  }
+
+  // ── Variant: secondary ────────────────────────────────────────────────────
+  &--secondary {
+    background-color: var(--accent);
+    border-color: var(--border);
+    color: var(--accent-foreground);
+  }
+
+  // ── Variant: destructive ──────────────────────────────────────────────────
+  &--destructive {
+    background-color: color-mix(in oklab, var(--destructive) 20%, transparent);
+    color: var(--destructive);
+  }
+
+  // ── Variant: outline ─────────────────────────────────────────────────────
+  &--outline {
+    border-color: var(--border);
+    color: var(--foreground);
+  }
+
+  // ── Variant: ghost ────────────────────────────────────────────────────────
+  &--ghost {
+    color: var(--muted-foreground);
+  }
+}
+
+// ── Keyframes ─────────────────────────────────────────────────────────────────
+
+@keyframes kui-badge-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
