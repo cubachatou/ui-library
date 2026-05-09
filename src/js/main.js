@@ -9,9 +9,11 @@ import "../scss/main.scss";
 import { initAccordions } from "./accordion.js";
 import { initCarousels } from "./carousel.js";
 import { initSelects } from "./select.js";
+import { initTabs } from "./tabs.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 	initAccordions();
 	initCarousels();
 	initSelects();
+	initTabs();
 });

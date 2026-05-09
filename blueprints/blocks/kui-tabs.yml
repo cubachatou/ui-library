@@ -1,0 +1,70 @@
+title: Tabs
+icon: layout
+preview: fields
+wysiwyg: true
+
+tabs:
+  content:
+    label: Content
+    fields:
+      items:
+        type: structure
+        label: Tab Items
+        sortable: true
+        fields:
+          label:
+            type: text
+            label: Label
+            required: true
+            width: 1/2
+
+          disabled:
+            type: toggle
+            label: Disabled
+            default: false
+            width: 1/2
+            help: "Prevent this tab from being selected."
+
+          icon:
+            type: text
+            label: Icon (inline SVG)
+            help: "Paste the full <svg> element. Leave empty for no icon."
+
+          body:
+            type: textarea
+            label: Body text
+            help: "Simple Markdown text. Used when Content blocks below is empty."
+
+          body_blocks:
+            type: blocks
+            label: Content blocks
+            help: "Rich content — renders instead of Body text above when not empty."
+            fieldsets:
+              - heading
+              - text
+              - list
+              - kui-button
+
+      style:
+        type: select
+        label: Display Style
+        default: default
+        width: 1/2
+        options:
+          - value: default
+            text: "Default (pill)"
+          - value: line
+            text: "Line"
+          - value: vertical
+            text: "Vertical"
+
+  settings:
+    label: Settings
+    fields:
+      html_id:
+        extends: fields/kui-html_id
+        width: 1/2
+
+      css_classes:
+        extends: fields/kui-css_classes
+        width: 1/2

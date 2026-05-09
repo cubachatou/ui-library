@@ -74,6 +74,7 @@ Kirby::plugin('kui/components', [
         'blocks/kui-button'        => __DIR__ . '/blueprints/blocks/kui-button.yml',
         'blocks/kui-carousel'      => __DIR__ . '/blueprints/blocks/kui-carousel.yml',
         'blocks/kui-select'        => __DIR__ . '/blueprints/blocks/kui-select.yml',
+        'blocks/kui-tabs'          => __DIR__ . '/blueprints/blocks/kui-tabs.yml',
     ],
 
     // ── Snippets ─────────────────────────────────────────────────────────────
@@ -118,6 +119,13 @@ Kirby::plugin('kui/components', [
         'blocks/kui-select_simple'    => __DIR__ . '/snippets/blocks/kui-select_simple.twig',
         'blocks/kui-select_grouped'   => __DIR__ . '/snippets/blocks/kui-select_grouped.twig',
         'blocks/_kui-select_base'     => __DIR__ . '/snippets/blocks/_kui-select_base.twig',
+
+        // Tabs widget — block dispatcher, variants, and internal base.
+        'blocks/kui-tabs'             => __DIR__ . '/snippets/blocks/kui-tabs.twig',
+        'blocks/kui-tabs_default'     => __DIR__ . '/snippets/blocks/kui-tabs_default.twig',
+        'blocks/kui-tabs_line'        => __DIR__ . '/snippets/blocks/kui-tabs_line.twig',
+        'blocks/kui-tabs_vertical'    => __DIR__ . '/snippets/blocks/kui-tabs_vertical.twig',
+        'blocks/_kui-tabs_base'       => __DIR__ . '/snippets/blocks/_kui-tabs_base.twig',
 
         // Asset loader — call snippet('kui/assets') in your layout <head>.
         'kui/assets'              => __DIR__ . '/snippets/ui-library/assets.php',

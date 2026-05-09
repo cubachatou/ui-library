@@ -1,0 +1,37 @@
+{#
+  kui-tabs_vertical.twig — Vertical (stacked list) variant.
+
+  Adds the kui-tabs--vertical modifier class and sets orientation="vertical"
+  so the JS uses ArrowUp/ArrowDown for keyboard navigation (ARIA Tabs pattern).
+  Responsive: collapses to horizontal pill style below 640 px.
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'tabs' %}
+{% set _base_class = block.css_classes.value %}
+{% set _extra_class = (_base_class ? _base_class ~ ' ' : '') ~ 'kui-tabs--vertical' %}
+
+{% embed '@ui/_kui-tabs_base.twig'
+	with {
+		items: block.items.toStructure(),
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class,
+		orientation: 'vertical'
+	}
+%}
+	{% block trigger_inner %}
+		{% if item.icon.isNotEmpty %}
+			<span class="kui-tabs__trigger-icon" aria-hidden="true">{{ item.icon.value|raw }}</span>
+		{% endif %}
+		<span class="kui-tabs__trigger-label">{{ item.label.value }}</span>
+	{% endblock %}
+	{% block panel_inner %}
+		<div class="kui-tabs__content">
+			{% set _blocks = item.body_blocks.toBlocks %}
+			{% if _blocks is not empty %}
+				{{ _blocks|raw }}
+			{% else %}
+				{{ item.body.kirbytext|raw }}
+			{% endif %}
+		</div>
+	{% endblock %}
+{% endembed %}

@@ -1,0 +1,95 @@
+{#
+  _kui-tabs_base.twig — Base tabs layout (internal partial).
+
+  Expected variables (passed via {% embed %} with {...}):
+    items       {StructureCollection}  Kirby structure items.
+    wrapper_id  {string}               HTML id for the root element.
+    extra_class {string}               Extra CSS classes on the root element.
+    orientation {string}               'horizontal' (default) or 'vertical'.
+
+  Overridable blocks:
+    {% block trigger_inner %} — Trigger button inner content (label, icon).
+    {% block panel_inner %}   — Panel body content.
+
+  JS hook attributes (never rename or remove):
+    data-kui-tabs           — Root element.
+    data-kui-tabs-list      — Tab trigger list (role="tablist").
+    data-kui-tabs-trigger   — Individual tab trigger (role="tab").
+    data-kui-tabs-panel     — Tab panel (role="tabpanel").
+    data-kui-tabs-options   — JSON config forwarded to tabs.js.
+#}
+
+{% set _id          = wrapper_id  is defined and wrapper_id  ? wrapper_id  : 'tabs' %}
+{% set _extra       = extra_class is defined and extra_class ? ' ' ~ extra_class : '' %}
+{% set _orientation = orientation is defined ? orientation : 'horizontal' %}
+
+<div
+	class="kui-tabs{{ _extra }}"
+	id="{{ _id }}"
+	data-kui-tabs
+	data-kui-tabs-options='{{ {"orientation": _orientation}|json_encode }}'
+>
+
+	{# ── Tab list (triggers) ──────────────────────────────────────────────── #}
+	<div
+		class="kui-tabs__list"
+		role="tablist"
+		aria-orientation="{{ _orientation }}"
+		data-kui-tabs-list
+	>
+		{% for item in items %}
+			{% set _trigger_id  = _id ~ '__tab-'   ~ loop.index %}
+			{% set _panel_id    = _id ~ '__panel-' ~ loop.index %}
+			{% set _is_disabled = item.disabled.isTrue %}
+			{% set _is_selected = loop.first and not _is_disabled %}
+
+			<button
+				class="kui-tabs__trigger"
+				id="{{ _trigger_id }}"
+				type="button"
+				role="tab"
+				aria-selected="{{ _is_selected ? 'true' : 'false' }}"
+				aria-controls="{{ _panel_id }}"
+				tabindex="{{ _is_selected ? '0' : '-1' }}"
+				data-kui-tabs-trigger
+				{% if _is_disabled %}aria-disabled="true"{% endif %}
+			>
+				{% block trigger_inner %}
+					{{ item.label.value }}
+				{% endblock %}
+			</button>
+		{% endfor %}
+	</div>
+
+	{# ── Tab panels ───────────────────────────────────────────────────────── #}
+	<div class="kui-tabs__panels" data-kui-tabs-panels>
+		{% for item in items %}
+			{% set _trigger_id  = _id ~ '__tab-'   ~ loop.index %}
+			{% set _panel_id    = _id ~ '__panel-' ~ loop.index %}
+			{% set _is_disabled = item.disabled.isTrue %}
+			{% set _is_active   = loop.first and not _is_disabled %}
+
+			<div
+				class="kui-tabs__panel"
+				id="{{ _panel_id }}"
+				role="tabpanel"
+				tabindex="0"
+				aria-labelledby="{{ _trigger_id }}"
+				{% if not _is_active %}hidden{% endif %}
+				data-kui-tabs-panel
+			>
+				{% block panel_inner %}
+					<div class="kui-tabs__content">
+						{% set _blocks = item.body_blocks.toBlocks %}
+						{% if _blocks is not empty %}
+							{{ _blocks | raw }}
+						{% else %}
+							{{ item.body.kirbytext | raw }}
+						{% endif %}
+					</div>
+				{% endblock %}
+			</div>
+		{% endfor %}
+	</div>
+
+</div>

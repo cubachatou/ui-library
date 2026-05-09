@@ -1,0 +1,36 @@
+{#
+  kui-tabs_default.twig — Default (pill/card list) variant.
+
+  Renders icons alongside tab labels when the icon field is populated.
+  No changes to _kui-tabs_base.twig, tabs.js, or _tabs.scss needed to
+  add or remove a variant.
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'tabs' %}
+{% set _extra_class = block.css_classes.value %}
+
+{% embed '@ui/_kui-tabs_base.twig'
+	with {
+		items: block.items.toStructure(),
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class,
+		orientation: 'horizontal'
+	}
+%}
+	{% block trigger_inner %}
+		{% if item.icon.isNotEmpty %}
+			<span class="kui-tabs__trigger-icon" aria-hidden="true">{{ item.icon.value|raw }}</span>
+		{% endif %}
+		<span class="kui-tabs__trigger-label">{{ item.label.value }}</span>
+	{% endblock %}
+	{% block panel_inner %}
+		<div class="kui-tabs__content">
+			{% set _blocks = item.body_blocks.toBlocks %}
+			{% if _blocks is not empty %}
+				{{ _blocks|raw }}
+			{% else %}
+				{{ item.body.kirbytext|raw }}
+			{% endif %}
+		</div>
+	{% endblock %}
+{% endembed %}
