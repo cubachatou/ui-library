@@ -1,0 +1,382 @@
+// =============================================================================
+// _drawer.scss — BEM styles for the Drawer (bottom-sheet / side-panel) component.
+//
+// The Drawer uses the Popover API (<div popover="manual">) for top-layer placement
+// without the modal constraints of <dialog>. Position is anchored to a viewport
+// edge and slides in from that edge.
+//
+// Structure:
+//   .kui-drawer__wrap                     (root, display: contents)
+//   ├─ button.kui-drawer__trigger         (data-kui-drawer-trigger)
+//   └─ dialog.kui-drawer                  (data-kui-drawer-panel)
+//      ├─ .kui-drawer__handle-area        (drag handle bar)
+//      │  └─ span.kui-drawer__handle
+//      └─ .kui-drawer__inner
+//         ├─ button.kui-drawer__close     (data-kui-drawer-close)
+//         ├─ .kui-drawer__header
+//         │  ├─ .kui-drawer__title
+//         │  └─ .kui-drawer__description
+//         ├─ .kui-drawer__body
+//         └─ .kui-drawer__footer
+//
+// Side modifiers (applied by variant templates):
+//   .kui-drawer--side-bottom  (default) — slides up from the bottom.
+//   .kui-drawer--side-top               — slides down from the top.
+//   .kui-drawer--side-left              — slides in from the left.
+//   .kui-drawer--side-right             — slides in from the right.
+//
+// Behaviour modifiers:
+//   .kui-drawer--scrollable  — body scrolls within a max-height cap.
+//   .kui-drawer--responsive  — At ≥ 768 px repositions to a centered modal.
+//
+// Animation strategy (same as dialog.js / _dialog.scss):
+//   Enter: @starting-style on dialog[open] sets the "off-screen" translate.
+//          CSS transitions animate to the final (on-screen) state.
+//   Exit:  JS sets data-state="closed" which restores the off-screen translate,
+//          then calls panel.close() after transitionend.
+//
+// Drag-to-dismiss:
+//   JS (drawer.js) sets `--kui-drawer-drag-offset` custom property on the panel
+//   during the drag gesture. SCSS reads it to translate the panel in real time.
+// =============================================================================
+
+@use 'tokens' as *;
+
+// ── Shared offscreen positions ─────────────────────────────────────────────
+// Used in both @starting-style and [data-state="closed"] to keep the two in sync.
+$_slide-bottom: translateY(100%);
+$_slide-top: translateY(-100%);
+$_slide-left: translateX(-100%);
+$_slide-right: translateX(100%);
+
+// ── Trigger ───────────────────────────────────────────────────────────────────
+
+.kui-drawer__wrap {
+  display: contents;
+}
+
+// ── Drawer panel ─────────────────────────────────────────────────────────────
+
+.kui-drawer {
+  // Reset browser popover defaults.
+  padding: 0;
+  border: none;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: $font-family-base;
+
+  // Full-width bottom sheet by default. Overridden per-side below.
+  position: fixed;
+  top: auto; // override popover UA inset: 0
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  max-height: 90dvh;
+  border-radius: $border-radius-lg $border-radius-lg 0 0;
+  border-top: $border-width solid var(--border);
+  overflow: hidden;
+
+  // CSS custom property set by drawer.js during drag gesture.
+  // translateY(0) when no drag is active.
+  --kui-drawer-drag-offset: 0px;
+
+  // ── Animation ─────────────────────────────────────────────────────────
+  transition:
+    transform $transition-slow,
+    opacity $transition-slow,
+    overlay $transition-slow allow-discrete,
+    display $transition-slow allow-discrete;
+
+  // ── Side: bottom (default) ─────────────────────────────────────────────
+  &.kui-drawer--side-bottom {
+    transform: translateY(var(--kui-drawer-drag-offset, 0px));
+
+    @starting-style {
+      &:popover-open {
+        transform: #{$_slide-bottom};
+      }
+    }
+
+    &[data-state='closed'] {
+      transform: #{$_slide-bottom};
+    }
+  }
+
+  // ── Side: top ─────────────────────────────────────────────────────────
+  &.kui-drawer--side-top {
+    bottom: auto;
+    top: 0;
+    border-radius: 0 0 $border-radius-lg $border-radius-lg;
+    border-top: none;
+    border-bottom: $border-width solid var(--border);
+    transform: translateY(var(--kui-drawer-drag-offset, 0px));
+
+    .kui-drawer__handle-area {
+      order: 1; // Move handle to the bottom for a top drawer.
+    }
+
+    @starting-style {
+      &:popover-open {
+        transform: #{$_slide-top};
+      }
+    }
+
+    &[data-state='closed'] {
+      transform: #{$_slide-top};
+    }
+  }
+
+  // ── Side: left ─────────────────────────────────────────────────────────
+  &.kui-drawer--side-left {
+    bottom: 0;
+    left: 0;
+    right: auto;
+    top: 0;
+    width: min(80vw, 360px);
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    border-radius: 0 $border-radius-lg $border-radius-lg 0;
+    border-top: none;
+    border-right: $border-width solid var(--border);
+    transform: translateX(var(--kui-drawer-drag-offset, 0px));
+
+    .kui-drawer__handle-area {
+      display: none; // No drag handle for side drawers.
+    }
+
+    @starting-style {
+      &:popover-open {
+        transform: #{$_slide-left};
+      }
+    }
+
+    &[data-state='closed'] {
+      transform: #{$_slide-left};
+    }
+  }
+
+  // ── Side: right ────────────────────────────────────────────────────────
+  &.kui-drawer--side-right {
+    bottom: 0;
+    left: auto;
+    right: 0;
+    top: 0;
+    width: min(80vw, 360px);
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    border-radius: $border-radius-lg 0 0 $border-radius-lg;
+    border-top: none;
+    border-left: $border-width solid var(--border);
+    transform: translateX(var(--kui-drawer-drag-offset, 0px));
+
+    .kui-drawer__handle-area {
+      display: none;
+    }
+
+    @starting-style {
+      &:popover-open {
+        transform: #{$_slide-right};
+      }
+    }
+
+    &[data-state='closed'] {
+      transform: #{$_slide-right};
+    }
+  }
+
+  // ── Backdrop ──────────────────────────────────────────────────────────
+  &::backdrop {
+    background-color: transparent;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    transition:
+      opacity $transition-slow,
+      overlay $transition-slow allow-discrete,
+      display $transition-slow allow-discrete;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  &[data-state='closed']::backdrop {
+    opacity: 0;
+  }
+
+  // ── Drag handle ────────────────────────────────────────────────────────
+  &__handle-area {
+    display: flex;
+    justify-content: center;
+    padding: $space-sm 0 $space-xs;
+    cursor: grab;
+    touch-action: none; // Let JS handle touch events.
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  &__handle {
+    display: block;
+    width: 3rem;
+    height: 4px;
+    border-radius: 100px;
+    background-color: var(--border);
+  }
+
+  // ── Inner container ────────────────────────────────────────────────────
+  &__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(90dvh - 1.5rem); // Minus the handle area.
+    overflow: hidden;
+  }
+
+  // ── Close button ───────────────────────────────────────────────────────
+  &__close {
+    position: absolute;
+    top: $space-md;
+    right: $space-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: $border-radius-sm;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition:
+      color $transition-fast,
+      background-color $transition-fast;
+
+    &:hover {
+      color: var(--foreground);
+      background-color: var(--secondary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 1px;
+    }
+  }
+
+  // ── Header ─────────────────────────────────────────────────────────────
+  &__header {
+    padding: $space-md $space-xl $space-sm;
+    padding-right: calc(#{$space-xl} + 2rem + #{$space-sm});
+    flex-shrink: 0;
+  }
+
+  &__title {
+    margin: 0 0 $space-xs;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    line-height: 1.3;
+    color: var(--foreground);
+  }
+
+  &__description {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: var(--muted-foreground);
+    line-height: $line-height-base;
+  }
+
+  // ── Body ───────────────────────────────────────────────────────────────
+  &__body {
+    padding: $space-md $space-xl;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: var(--foreground);
+
+    &--scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      mask-image: linear-gradient(to bottom, black calc(100% - 2rem), transparent 100%);
+    }
+  }
+
+  // ── Footer ─────────────────────────────────────────────────────────────
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $space-sm;
+    padding: $space-sm $space-xl $space-lg;
+    border-top: $border-width solid var(--border);
+    flex-shrink: 0;
+
+    // Block text snippets wrap content in .doc-prose which adds margin.
+    .doc-prose {
+      display: contents;
+    }
+  }
+
+  // ── Modifier: scrollable ────────────────────────────────────────────────
+  &--scrollable {
+    .kui-drawer__inner {
+      overflow: hidden;
+    }
+
+    .kui-drawer__body {
+      max-height: min(calc(85dvh - 8rem), 400px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+  }
+
+  // ── Modifier: responsive (Vaul-style) ──────────────────────────────────
+  // At ≥ 768 px this drawer transforms into a centered modal dialog.
+  // JS updates open/close semantics at this breakpoint via matchMedia.
+  &--responsive {
+    @media (min-width: 768px) {
+      // Centered modal positioning.
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      right: auto;
+      bottom: auto;
+      translate: -50% -50%;
+      width: min(90vw, 32rem);
+      max-width: none;
+      max-height: min(90dvh, 640px);
+      border-radius: $border-radius-lg;
+      border: $border-width solid var(--border);
+
+      // No slide animation on desktop — fade+scale like a dialog.
+      &.kui-drawer--side-bottom {
+        transform: none;
+        opacity: 1;
+
+        @starting-style {
+          &:popover-open {
+            opacity: 0;
+            transform: scale(0.96);
+          }
+        }
+
+        &[data-state='closed'] {
+          opacity: 0;
+          transform: scale(0.96);
+        }
+      }
+
+      // Hide the drag handle on desktop.
+      .kui-drawer__handle-area {
+        display: none;
+      }
+    }
+  }
+}

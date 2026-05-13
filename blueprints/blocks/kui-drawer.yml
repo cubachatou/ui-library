@@ -1,0 +1,103 @@
+name: Drawer
+icon: box
+
+tabs:
+  content:
+    label: Content
+    fields:
+      trigger_label:
+        label: Trigger Label
+        type: text
+        default: Open Drawer
+        required: true
+        help: Text for the button that opens the drawer.
+
+      title:
+        label: Title
+        type: text
+        required: true
+
+      description:
+        label: Description
+        type: text
+        help: Optional supporting text below the title.
+
+      body:
+        label: Body
+        type: blocks
+        fieldsets:
+          - heading
+          - text
+          - image
+          - list
+          - markdown
+
+      footer:
+        label: Footer
+        type: blocks
+        fieldsets:
+          - heading
+          - text
+          - markdown
+
+  settings:
+    label: Settings
+    fields:
+      style:
+        label: Variant
+        type: select
+        default: default
+        options:
+          - value: default
+            text: Default (bottom sheet)
+          - value: scrollable
+            text: Scrollable Content
+          - value: left
+            text: Left Side
+          - value: right
+            text: Right Side
+          - value: responsive
+            text: Responsive (Dialog on desktop)
+        help: >
+          "Responsive" renders as a bottom-sheet on mobile and a centered dialog
+          on viewports ≥ 768 px — a vanilla-JS equivalent of the Vaul pattern.
+
+      side:
+        label: Side
+        type: select
+        default: bottom
+        options:
+          - value: bottom
+            text: Bottom
+          - value: top
+            text: Top
+          - value: left
+            text: Left
+          - value: right
+            text: Right
+        help: >
+          Used only by the Default and Scrollable variants.
+          The Left and Right variants force their respective side.
+
+      close_on_backdrop:
+        label: Close on backdrop click
+        type: toggle
+        default: true
+        text: true
+
+      drag_to_dismiss:
+        label: Drag to dismiss
+        type: toggle
+        default: true
+        text: true
+        help: Allow swiping down (or in the direction of open) to dismiss the drawer.
+
+      html_id:
+        label: HTML ID
+        type: slug
+        help: Optional custom id attribute for the wrapper element.
+
+      css_classes:
+        label: Extra CSS Classes
+        type: text
+        help: Space-separated custom CSS classes appended to the <dialog> element.

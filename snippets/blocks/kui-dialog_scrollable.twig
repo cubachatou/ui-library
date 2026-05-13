@@ -1,0 +1,38 @@
+{#
+  kui-dialog_scrollable.twig — Scrollable Content variant.
+
+  The entire dialog body region scrolls within a capped max-height. Unlike
+  the sticky-footer variant the footer scrolls with the content — there is no
+  pinning. Use this variant when there is no footer action bar, only a long
+  block of content (terms, changelog, image gallery, etc.).
+
+  The modifier class kui-dialog--scrollable instructs SCSS to apply
+  max-height + overflow-y: auto on the body element.
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'dialog-' ~ block.id %}
+{% set _extra_class = block.css_classes.value %}
+
+{% embed '@ui/_kui-dialog_base.twig'
+	with {
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class ~ ' kui-dialog--scrollable',
+		trigger_label: block.trigger_label.value,
+		dialog_title: block.title.value,
+		dialog_description: block.description.value,
+		close_on_backdrop: block.close_on_backdrop.isTrue
+	}
+%}
+	{% block dialog_body %}
+		<div class="kui-dialog__body kui-dialog__body--scroll">
+			{{ block.body.toBlocks|raw }}
+		</div>
+	{% endblock %}
+	{% block dialog_footer %}
+		{% if block.footer.isNotEmpty %}
+			<div class="kui-dialog__footer">
+				{{ block.footer.toBlocks|raw }}
+			</div>
+		{% endif %}
+	{% endblock %}
+{% endembed %}

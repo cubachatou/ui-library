@@ -1,0 +1,106 @@
+{#
+  _kui-drawer_base.twig — Base drawer layout (internal partial).
+
+  Expected variables (passed via {% embed %} with {...}):
+    wrapper_id        {string}  HTML id for the root wrapper element.
+    extra_class       {string}  Extra CSS classes appended to the <dialog> element.
+    trigger_label     {string}  Text label for the trigger button.
+    dialog_title      {string}  Visible title inside the drawer header.
+    dialog_description {string} Supporting text below the title.
+    close_on_backdrop {bool}    Whether clicking the backdrop closes the drawer.
+    drag_to_dismiss   {bool}    Whether drag-to-dismiss gesture is active.
+
+  Overridable blocks:
+    {% block drawer_handle %}       — The drag handle bar above the header.
+    {% block drawer_close_button %} — The × close button in the header.
+    {% block drawer_body %}         — Main content region.
+    {% block drawer_footer %}       — Footer action region.
+
+  JS hook attributes (never remove or rename):
+    data-kui-drawer              — Root wrapper element.
+    data-kui-drawer-trigger      — <button> that opens the drawer.
+    data-kui-drawer-panel        — The <dialog> element itself.
+    data-kui-drawer-close        — Any element that closes the drawer on click.
+    data-kui-drawer-handle       — Drag handle element used for gesture detection.
+    data-kui-drawer-options      — JSON config forwarded to drawer.js.
+#}
+
+{% set _id          = wrapper_id is defined and wrapper_id ? wrapper_id : 'drawer' %}
+{% set _extra       = extra_class is defined and extra_class ? ' ' ~ extra_class : '' %}
+{% set _backdrop    = close_on_backdrop is defined ? close_on_backdrop : true %}
+{% set _drag        = drag_to_dismiss is defined ? drag_to_dismiss : true %}
+{% set _title       = dialog_title is defined ? dialog_title : '' %}
+{% set _description = dialog_description is defined ? dialog_description : '' %}
+{% set _trigger     = trigger_label is defined ? trigger_label : 'Open' %}
+
+{% set _title_id = _id ~ '__title' %}
+{% set _desc_id  = _id ~ '__description' %}
+
+<div
+	class="kui-drawer__wrap"
+	id="{{ _id }}"
+	data-kui-drawer
+	data-kui-drawer-options='{{ {"closeOnBackdrop": _backdrop, "dragToDismiss": _drag}|json_encode }}'
+>
+	{# ── Trigger ─────────────────────────────────────────────────────────── #}
+	<button
+		class="kui-drawer__trigger kui-button kui-button--default"
+		type="button"
+		aria-haspopup="dialog"
+		data-kui-drawer-trigger
+	>
+		{{- _trigger -}}
+	</button>
+
+	{# ── Drawer panel ─────────────────────────────────────────────────────── #}
+	<div
+		popover="manual"
+		role="dialog"
+		aria-modal="true"
+		class="kui-drawer{{ _extra }}"
+		aria-labelledby="{{ _title_id }}"
+		{% if _description %}aria-describedby="{{ _desc_id }}"{% endif %}
+		data-kui-drawer-panel
+	>
+		{# ── Drag handle ─────────────────────────────────────────────────── #}
+		{% block drawer_handle %}
+			<div class="kui-drawer__handle-area" aria-hidden="true" data-kui-drawer-handle>
+				<span class="kui-drawer__handle"></span>
+			</div>
+		{% endblock %}
+
+		<div class="kui-drawer__inner">
+
+			{# ── Close button ─────────────────────────────────────────────── #}
+			{% block drawer_close_button %}
+				<button
+					class="kui-drawer__close"
+					type="button"
+					aria-label="Close"
+					data-kui-drawer-close
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+						<path d="M18 6 6 18M6 6l12 12"/>
+					</svg>
+				</button>
+			{% endblock %}
+
+			{# ── Header ───────────────────────────────────────────────────── #}
+			<div class="kui-drawer__header">
+				<h2 class="kui-drawer__title" id="{{ _title_id }}">{{ _title }}</h2>
+				{% if _description %}
+					<p class="kui-drawer__description" id="{{ _desc_id }}">{{ _description }}</p>
+				{% endif %}
+			</div>
+
+			{# ── Body ──────────────────────────────────────────────────────── #}
+			{% block drawer_body %}
+			{% endblock %}
+
+			{# ── Footer ────────────────────────────────────────────────────── #}
+			{% block drawer_footer %}
+			{% endblock %}
+
+		</div>
+	</div>
+</div>

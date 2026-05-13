@@ -1,0 +1,73 @@
+title: Dialog
+icon: box
+preview: fields
+wysiwyg: true
+
+tabs:
+  content:
+    label: Content
+    fields:
+      trigger_label:
+        type: text
+        label: Trigger Label
+        required: true
+        default: Open Dialog
+        width: 1/2
+
+      title:
+        type: text
+        label: Dialog Title
+        required: true
+        width: 1/2
+
+      description:
+        type: text
+        label: Description
+        help: "Short supporting text shown beneath the title."
+
+      body:
+        type: blocks
+        label: Body Content
+        fieldsets:
+          - heading
+          - text
+          - list
+          - code
+          - kui-button
+
+      footer:
+        type: blocks
+        label: Footer Actions
+        help: "Buttons or actions shown at the bottom of the dialog."
+        fieldsets:
+          - kui-button
+
+  settings:
+    label: Settings
+    fields:
+      style:
+        type: select
+        label: Style
+        default: default
+        width: 1/2
+        options:
+          default: Default
+          custom-close: Custom Close Button
+          no-close: No Close Button
+          sticky-footer: Sticky Footer
+          scrollable: Scrollable Content
+
+      close_on_backdrop:
+        type: toggle
+        label: Close on Backdrop Click
+        default: true
+        width: 1/2
+        help: "Close the dialog when the user clicks the backdrop overlay."
+
+      html_id:
+        extends: fields/kui-html_id
+        width: 1/2
+
+      css_classes:
+        extends: fields/kui-css_classes
+        width: 1/2

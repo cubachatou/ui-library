@@ -1,0 +1,38 @@
+{#
+  kui-dialog_custom-close.twig — Custom Close Button variant.
+
+  The × button in the header is suppressed. A close trigger (e.g. a kui-button
+  with data-kui-dialog-close) lives inside the footer content blocks instead,
+  giving the content author full control over its label and position.
+  Escape and backdrop click still close the dialog as normal.
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'dialog-' ~ block.id %}
+{% set _extra_class = block.css_classes.value %}
+
+{% embed '@ui/_kui-dialog_base.twig'
+	with {
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class ~ ' kui-dialog--custom-close',
+		trigger_label: block.trigger_label.value,
+		dialog_title: block.title.value,
+		dialog_description: block.description.value,
+		close_on_backdrop: block.close_on_backdrop.isTrue
+	}
+%}
+	{% block dialog_close_button %}
+		{# Intentionally empty — close control lives in the footer. #}
+	{% endblock %}
+	{% block dialog_body %}
+		<div class="kui-dialog__body">
+			{{ block.body.toBlocks|raw }}
+		</div>
+	{% endblock %}
+	{% block dialog_footer %}
+		{% if block.footer.isNotEmpty %}
+			<div class="kui-dialog__footer">
+				{{ block.footer.toBlocks|raw }}
+			</div>
+		{% endif %}
+	{% endblock %}
+{% endembed %}

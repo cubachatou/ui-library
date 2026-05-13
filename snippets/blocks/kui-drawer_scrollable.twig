@@ -1,0 +1,37 @@
+{#
+  kui-drawer_scrollable.twig — Scrollable content drawer variant.
+
+  Same sliding behaviour as Default but the body has overflow-y: auto with a
+  cap so the drawer never outgrows the viewport. The footer stays below the
+  scroll region (pinned by flex layout).
+  Works with any side value.
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'drawer-' ~ block.id %}
+{% set _side = block.side.value ? : 'bottom' %}
+{% set _extra_class = block.css_classes.value ~ ' kui-drawer--side-' ~ _side ~ ' kui-drawer--scrollable' %}
+
+{% embed '@ui/_kui-drawer_base.twig'
+	with {
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class,
+		trigger_label: block.trigger_label.value,
+		dialog_title: block.title.value,
+		dialog_description: block.description.value,
+		close_on_backdrop: block.close_on_backdrop.isTrue,
+		drag_to_dismiss: block.drag_to_dismiss.isTrue
+	}
+%}
+	{% block drawer_body %}
+		<div class="kui-drawer__body kui-drawer__body--scroll">
+			{{ block.body.toBlocks|raw }}
+		</div>
+	{% endblock %}
+	{% block drawer_footer %}
+		{% if block.footer.isNotEmpty %}
+			<div class="kui-drawer__footer">
+				{{ block.footer.toBlocks|raw }}
+			</div>
+		{% endif %}
+	{% endblock %}
+{% endembed %}

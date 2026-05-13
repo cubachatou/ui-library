@@ -1,0 +1,34 @@
+{#
+  kui-dialog_default.twig — Standard dialog variant.
+
+  Renders a dialog with a × close button in the top-right corner.
+  The body and footer render block content from the panel.
+  No changes to _kui-dialog_base.twig, dialog.js, or _dialog.scss needed.
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'dialog-' ~ block.id %}
+{% set _extra_class = block.css_classes.value %}
+
+{% embed '@ui/_kui-dialog_base.twig'
+	with {
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class,
+		trigger_label: block.trigger_label.value,
+		dialog_title: block.title.value,
+		dialog_description: block.description.value,
+		close_on_backdrop: block.close_on_backdrop.isTrue
+	}
+%}
+	{% block dialog_body %}
+		<div class="kui-dialog__body">
+			{{ block.body.toBlocks|raw }}
+		</div>
+	{% endblock %}
+	{% block dialog_footer %}
+		{% if block.footer.isNotEmpty %}
+			<div class="kui-dialog__footer">
+				{{ block.footer.toBlocks|raw }}
+			</div>
+		{% endif %}
+	{% endblock %}
+{% endembed %}

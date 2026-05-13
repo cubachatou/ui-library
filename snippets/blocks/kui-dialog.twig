@@ -1,0 +1,21 @@
+{#
+  kui-dialog.twig — Variant dispatcher.
+
+  Reads the `style` field and delegates to the matching variant template.
+  Adding a new variant: add its value to the blueprint style select and a new
+  branch here. No other files need changing.
+#}
+
+{% set style = block.style.value %}
+
+{% if style == 'custom-close' %}
+	{% include '@ui/kui-dialog_custom-close.twig' %}
+{% elseif style == 'no-close' %}
+	{% include '@ui/kui-dialog_no-close.twig' %}
+{% elseif style == 'sticky-footer' %}
+	{% include '@ui/kui-dialog_sticky-footer.twig' %}
+{% elseif style == 'scrollable' %}
+	{% include '@ui/kui-dialog_scrollable.twig' %}
+{% else %}
+	{% include '@ui/kui-dialog_default.twig' %}
+{% endif %}

@@ -1,0 +1,73 @@
+{#
+  kui-drawer.twig — Variant dispatcher.
+
+  Reads the `style` field and delegates to the matching variant template.
+  The Left and Right variants force their side-modifier class rather than
+  reading the `side` blueprint field (they are dedicated style choices).
+#}
+
+{% set style = block.style.value %}
+
+{% if style == 'scrollable' %}
+	{% include '@ui/kui-drawer_scrollable.twig' %}
+{% elseif style == 'left' %}
+	{# Force left side — ignore the side field. #}
+	{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'drawer-' ~ block.id %}
+	{% set _extra_class = block.css_classes.value ~ ' kui-drawer--side-left' %}
+	{% embed '@ui/_kui-drawer_base.twig'
+		with {
+			wrapper_id: _wrapper_id,
+			extra_class: _extra_class,
+			trigger_label: block.trigger_label.value,
+			dialog_title: block.title.value,
+			dialog_description: block.description.value,
+			close_on_backdrop: block.close_on_backdrop.isTrue,
+			drag_to_dismiss: block.drag_to_dismiss.isTrue
+		}
+	%}
+		{% block drawer_body %}
+			<div class="kui-drawer__body">
+				{{ block.body.toBlocks|raw }}
+			</div>
+		{% endblock %}
+		{% block drawer_footer %}
+			{% if block.footer.isNotEmpty %}
+				<div class="kui-drawer__footer">
+					{{ block.footer.toBlocks|raw }}
+				</div>
+			{% endif %}
+		{% endblock %}
+	{% endembed %}
+{% elseif style == 'right' %}
+	{# Force right side. #}
+	{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'drawer-' ~ block.id %}
+	{% set _extra_class = block.css_classes.value ~ ' kui-drawer--side-right' %}
+	{% embed '@ui/_kui-drawer_base.twig'
+		with {
+			wrapper_id: _wrapper_id,
+			extra_class: _extra_class,
+			trigger_label: block.trigger_label.value,
+			dialog_title: block.title.value,
+			dialog_description: block.description.value,
+			close_on_backdrop: block.close_on_backdrop.isTrue,
+			drag_to_dismiss: block.drag_to_dismiss.isTrue
+		}
+	%}
+		{% block drawer_body %}
+			<div class="kui-drawer__body">
+				{{ block.body.toBlocks|raw }}
+			</div>
+		{% endblock %}
+		{% block drawer_footer %}
+			{% if block.footer.isNotEmpty %}
+				<div class="kui-drawer__footer">
+					{{ block.footer.toBlocks|raw }}
+				</div>
+			{% endif %}
+		{% endblock %}
+	{% endembed %}
+{% elseif style == 'responsive' %}
+	{% include '@ui/kui-drawer_responsive.twig' %}
+{% else %}
+	{% include '@ui/kui-drawer_default.twig' %}
+{% endif %}

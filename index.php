@@ -73,6 +73,8 @@ Kirby::plugin('kui/components', [
         'blocks/kui-badge'         => __DIR__ . '/blueprints/blocks/kui-badge.yml',
         'blocks/kui-button'        => __DIR__ . '/blueprints/blocks/kui-button.yml',
         'blocks/kui-carousel'      => __DIR__ . '/blueprints/blocks/kui-carousel.yml',
+        'blocks/kui-dialog'        => __DIR__ . '/blueprints/blocks/kui-dialog.yml',
+        'blocks/kui-drawer'        => __DIR__ . '/blueprints/blocks/kui-drawer.yml',
         'blocks/kui-select'        => __DIR__ . '/blueprints/blocks/kui-select.yml',
         'blocks/kui-tabs'          => __DIR__ . '/blueprints/blocks/kui-tabs.yml',
     ],
@@ -126,6 +128,22 @@ Kirby::plugin('kui/components', [
         'blocks/kui-tabs_line'        => __DIR__ . '/snippets/blocks/kui-tabs_line.twig',
         'blocks/kui-tabs_vertical'    => __DIR__ . '/snippets/blocks/kui-tabs_vertical.twig',
         'blocks/_kui-tabs_base'       => __DIR__ . '/snippets/blocks/_kui-tabs_base.twig',
+
+        // Dialog widget — block dispatcher, variants, and internal base.
+        'blocks/kui-dialog'                => __DIR__ . '/snippets/blocks/kui-dialog.twig',
+        'blocks/kui-dialog_default'        => __DIR__ . '/snippets/blocks/kui-dialog_default.twig',
+        'blocks/kui-dialog_custom-close'   => __DIR__ . '/snippets/blocks/kui-dialog_custom-close.twig',
+        'blocks/kui-dialog_no-close'       => __DIR__ . '/snippets/blocks/kui-dialog_no-close.twig',
+        'blocks/kui-dialog_sticky-footer'  => __DIR__ . '/snippets/blocks/kui-dialog_sticky-footer.twig',
+        'blocks/kui-dialog_scrollable'     => __DIR__ . '/snippets/blocks/kui-dialog_scrollable.twig',
+        'blocks/_kui-dialog_base'          => __DIR__ . '/snippets/blocks/_kui-dialog_base.twig',
+
+        // Drawer widget — block dispatcher, variants, and internal base.
+        'blocks/kui-drawer'                => __DIR__ . '/snippets/blocks/kui-drawer.twig',
+        'blocks/kui-drawer_default'        => __DIR__ . '/snippets/blocks/kui-drawer_default.twig',
+        'blocks/kui-drawer_scrollable'     => __DIR__ . '/snippets/blocks/kui-drawer_scrollable.twig',
+        'blocks/kui-drawer_responsive'     => __DIR__ . '/snippets/blocks/kui-drawer_responsive.twig',
+        'blocks/_kui-drawer_base'          => __DIR__ . '/snippets/blocks/_kui-drawer_base.twig',
 
         // Asset loader — call snippet('kui/assets') in your layout <head>.
         'kui/assets'              => __DIR__ . '/snippets/ui-library/assets.php',

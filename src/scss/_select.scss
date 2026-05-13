@@ -25,8 +25,37 @@
 
 @use 'tokens' as *;
 
+// ── Animation keyframes ───────────────────────────────────────────────────────
+@keyframes _kui-select-in {
+  from {
+    opacity: 0;
+    scale: var(--kui-select-anim-scale);
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes _kui-select-out {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: var(--kui-select-anim-scale);
+  }
+}
+
 // ── Block ─────────────────────────────────────────────────────────────────────
 .kui-select {
+  // Animation configuration — override per-instance via inline style or globally
+  // in your own stylesheet. Set --kui-select-anim-duration: 0ms to disable.
+  --kui-select-anim-duration: 150ms;
+  --kui-select-anim-easing: cubic-bezier(0.16, 1, 0.3, 1);
+  --kui-select-anim-scale: 0.95;
+
   position: relative;
   display: inline-flex;
   flex-direction: column;
@@ -34,6 +63,10 @@
   width: 100%;
   max-width: 15rem;
   font-family: $font-family-base;
+
+  @media (prefers-reduced-motion: reduce) {
+    --kui-select-anim-duration: 0ms;
+  }
 }
 
 // ── Trigger ───────────────────────────────────────────────────────────────────
@@ -133,15 +166,24 @@
   border: $border-width solid var(--border);
   border-radius: $border-radius-sm;
   padding: $space-xs 0;
+  transform-origin: top center;
 
-  // Hidden state — toggled by JS via the `hidden` attribute → data-state.
+  // Hidden state — toggled by JS after the closing animation completes.
   &[hidden] {
     display: none;
   }
 
-  // Smooth entry when open (CSS-only, no JS animation needed).
+  // Open: animate in.
   &[data-state='open'] {
     display: block;
+    animation: _kui-select-in var(--kui-select-anim-duration) var(--kui-select-anim-easing) both;
+  }
+
+  // Closing: stay visible while the exit animation plays;
+  // JS adds `hidden` once animationend fires.
+  &[data-state='closing'] {
+    display: block;
+    animation: _kui-select-out var(--kui-select-anim-duration) var(--kui-select-anim-easing) both;
   }
 }
 

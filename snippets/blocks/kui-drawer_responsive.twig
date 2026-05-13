@@ -1,0 +1,43 @@
+{#
+  kui-drawer_responsive.twig — Responsive (Vaul-style) drawer variant.
+
+  Behaviour:
+    - Mobile (< 768 px): renders as a bottom-sheet drawer that slides up.
+    - Desktop (≥ 768 px): repositions to a centered modal dialog via CSS
+      (position: fixed; inset: 50%; translate: -50% -50%; border-radius: …).
+      The drag handle is hidden at desktop width.
+
+  JS watches a `matchMedia('(min-width: 768px)')` listener and switches open/close
+  behaviour between sheet and dialog semantics automatically.
+
+  The modifier class `kui-drawer--responsive` is the CSS hook. No separate
+  template is needed for the desktop state — it is the same HTML, different styling.
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'drawer-' ~ block.id %}
+{% set _extra_class = block.css_classes.value ~ ' kui-drawer--side-bottom kui-drawer--responsive' %}
+
+{% embed '@ui/_kui-drawer_base.twig'
+	with {
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class,
+		trigger_label: block.trigger_label.value,
+		dialog_title: block.title.value,
+		dialog_description: block.description.value,
+		close_on_backdrop: block.close_on_backdrop.isTrue,
+		drag_to_dismiss: block.drag_to_dismiss.isTrue
+	}
+%}
+	{% block drawer_body %}
+		<div class="kui-drawer__body kui-drawer__body--scroll">
+			{{ block.body.toBlocks|raw }}
+		</div>
+	{% endblock %}
+	{% block drawer_footer %}
+		{% if block.footer.isNotEmpty %}
+			<div class="kui-drawer__footer">
+				{{ block.footer.toBlocks|raw }}
+			</div>
+		{% endif %}
+	{% endblock %}
+{% endembed %}

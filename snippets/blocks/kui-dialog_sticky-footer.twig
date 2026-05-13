@@ -1,0 +1,39 @@
+{#
+  kui-dialog_sticky-footer.twig — Sticky Footer variant.
+
+  The dialog body is independently scrollable. The footer is pinned outside
+  the scroll container so it always remains visible at the bottom of the dialog
+  regardless of how much body content is present.
+
+  The modifier class kui-dialog--sticky-footer instructs SCSS to:
+    - set the inner to flex-column layout
+    - give the body flex: 1 + overflow-y: auto
+    - keep the footer below the scroll region (no flex: 1)
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'dialog-' ~ block.id %}
+{% set _extra_class = block.css_classes.value %}
+
+{% embed '@ui/_kui-dialog_base.twig'
+	with {
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class ~ ' kui-dialog--sticky-footer',
+		trigger_label: block.trigger_label.value,
+		dialog_title: block.title.value,
+		dialog_description: block.description.value,
+		close_on_backdrop: block.close_on_backdrop.isTrue
+	}
+%}
+	{% block dialog_body %}
+		<div class="kui-dialog__body kui-dialog__body--scroll">
+			{{ block.body.toBlocks|raw }}
+		</div>
+	{% endblock %}
+	{% block dialog_footer %}
+		{% if block.footer.isNotEmpty %}
+			<div class="kui-dialog__footer">
+				{{ block.footer.toBlocks|raw }}
+			</div>
+		{% endif %}
+	{% endblock %}
+{% endembed %}

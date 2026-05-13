@@ -1,0 +1,38 @@
+{#
+  kui-dialog_no-close.twig — No Close Button variant.
+
+  Neither a header × button nor an explicit footer close control is rendered.
+  The only exits are: Escape key (native <dialog> behaviour) and backdrop
+  click (when close_on_backdrop is enabled). Use sparingly — users must always
+  have a predictable escape route.
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'dialog-' ~ block.id %}
+{% set _extra_class = block.css_classes.value %}
+
+{% embed '@ui/_kui-dialog_base.twig'
+	with {
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class ~ ' kui-dialog--no-close',
+		trigger_label: block.trigger_label.value,
+		dialog_title: block.title.value,
+		dialog_description: block.description.value,
+		close_on_backdrop: block.close_on_backdrop.isTrue
+	}
+%}
+	{% block dialog_close_button %}
+		{# Intentionally empty. #}
+	{% endblock %}
+	{% block dialog_body %}
+		<div class="kui-dialog__body">
+			{{ block.body.toBlocks|raw }}
+		</div>
+	{% endblock %}
+	{% block dialog_footer %}
+		{% if block.footer.isNotEmpty %}
+			<div class="kui-dialog__footer">
+				{{ block.footer.toBlocks|raw }}
+			</div>
+		{% endif %}
+	{% endblock %}
+{% endembed %}

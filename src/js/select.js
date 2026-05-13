@@ -60,6 +60,10 @@ export class Select {
 		this._boundHandleItemClick = this._handleItemClick.bind(this);
 		this._boundHandleItemKeydown = this._handleItemKeydown.bind(this);
 		this._boundHandleOutsideClick = this._handleOutsideClick.bind(this);
+
+		// Tracks the pending animationend listener set during _close(), so it can
+		// be cancelled if _open() is called before the exit animation finishes.
+		this._closeAnimEndHandler = null;
 	}
 
 	/**
@@ -95,6 +99,7 @@ export class Select {
 		});
 
 		this._removeOutsideClickListener();
+		this._cancelCloseAnimation();
 	}
 
 	// ── Public API ─────────────────────────────────────────────────────────────
@@ -117,6 +122,10 @@ export class Select {
 	}
 
 	_open() {
+		// If a close animation is still in progress, cancel it so the content
+		// element stays visible and the hidden attribute is never applied.
+		this._cancelCloseAnimation();
+
 		this._trigger.setAttribute("aria-expanded", "true");
 		this.root.dataset.state = "open";
 		this._content.dataset.state = "open";
@@ -132,13 +141,33 @@ export class Select {
 
 	_close() {
 		this._trigger.setAttribute("aria-expanded", "false");
+		// Flip root state immediately (chevron rotates back, isOpen becomes false).
 		this.root.dataset.state = "closed";
-		this._content.dataset.state = "closed";
-		this._content.setAttribute("hidden", "");
 		this._clearFocusedItem();
 		this._trigger.removeAttribute("aria-activedescendant");
-
 		this._removeOutsideClickListener();
+
+		// Cancel any previous close listener before starting a new one.
+		this._cancelCloseAnimation();
+
+		// Trigger the exit animation; apply `hidden` only after it finishes so
+		// the content element stays in the render tree during the transition.
+		this._content.dataset.state = "closing";
+		this._closeAnimEndHandler = () => {
+			this._content.removeEventListener("animationend", this._closeAnimEndHandler);
+			this._content.dataset.state = "closed";
+			this._content.setAttribute("hidden", "");
+			this._closeAnimEndHandler = null;
+		};
+		this._content.addEventListener("animationend", this._closeAnimEndHandler);
+	}
+
+	/** Cancel a pending close animation and its deferred hidden-attribute setter. */
+	_cancelCloseAnimation() {
+		if (this._closeAnimEndHandler) {
+			this._content.removeEventListener("animationend", this._closeAnimEndHandler);
+			this._closeAnimEndHandler = null;
+		}
 	}
 
 	_removeOutsideClickListener() {
