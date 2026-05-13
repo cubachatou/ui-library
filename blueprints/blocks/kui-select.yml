@@ -71,16 +71,7 @@ tabs:
         width: 1/2
         help: "Disable the entire select widget."
 
-      invalid:
-        type: toggle
-        label: Invalid
-        default: false
-        width: 1/2
-        help: "Show the error state (red border, aria-invalid)."
-
       error_message:
         type: text
         label: Error Message
-        help: "Shown beneath the trigger when the widget is in an invalid state."
-        when:
-          invalid: true
+        help: "Shown beneath the trigger when validation fails."

@@ -7,8 +7,10 @@
     extra_class   {string}               Extra CSS classes on the root element.
     placeholder   {string}               Text shown when no option is selected.
     is_disabled   {bool}                 Disable the whole widget.
-    is_invalid    {bool}                 Apply error state (data-invalid + aria-invalid).
-    error_message {string}               Error text shown below the trigger.
+    error_message {string}               Error text shown below the trigger when validation fails.
+
+  The invalid state (data-invalid on root, aria-invalid on trigger) is set
+  automatically by JS when a required select is submitted without a value.
 
   Overridable blocks:
     {% block item_list %}  — Full listbox contents (items, groups, separators).
@@ -25,7 +27,7 @@
 
   Accessibility:
     - Trigger: aria-expanded, aria-haspopup="listbox", aria-controls → listbox id
-    - Trigger: aria-invalid when is_invalid
+    - Trigger: aria-invalid set by JS on invalid form submission
     - Listbox: role="listbox", aria-label="Options"
     - Items: role="option", aria-selected, aria-disabled
     - Root: data-invalid attribute when is_invalid (drives SCSS red border)
@@ -36,7 +38,6 @@
 {% set _extra   = extra_class is defined and extra_class ? ' ' ~ extra_class : '' %}
 {% set _ph      = placeholder  is defined and placeholder  ? placeholder  : 'Select an option…' %}
 {% set _disabled = is_disabled is defined and is_disabled %}
-{% set _invalid  = is_invalid  is defined and is_invalid %}
 {% set _errmsg   = error_message is defined and error_message ? error_message : '' %}
 
 {% set _listbox_id = _id ~ '__listbox' %}
@@ -48,7 +49,6 @@
   id="{{ _id }}"
   data-kui-select
   data-state="closed"
-  {% if _invalid %}data-invalid{% endif %}
 >
   {# ── Trigger button ─────────────────────────────────────────────────────── #}
   <button
@@ -62,7 +62,6 @@
     aria-labelledby="{{ _trigger_id }} {{ _value_id }}"
     data-kui-select-trigger
     {% if _disabled %}disabled aria-disabled="true"{% endif %}
-    {% if _invalid %}aria-invalid="true"{% endif %}
   >
     <span class="kui-select__value" id="{{ _value_id }}" data-kui-select-value>{{ _ph }}</span>
     <svg
@@ -82,7 +81,7 @@
   </button>
 
   {# ── Error message ──────────────────────────────────────────────────────── #}
-  {% if _invalid and _errmsg %}
+  {% if _errmsg %}
     <span class="kui-select__error" role="alert">{{ _errmsg }}</span>
   {% endif %}
 

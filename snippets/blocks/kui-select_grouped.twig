@@ -14,7 +14,6 @@
 {% set _extra_class   = block.css_classes.value %}
 {% set _placeholder   = block.placeholder.isNotEmpty ? block.placeholder.value : 'Select an option…' %}
 {% set _is_disabled   = block.disabled.isTrue %}
-{% set _is_invalid    = block.invalid.isTrue %}
 {% set _error_message = block.error_message.value %}
 
 {% embed '@ui/_kui-select_base.twig'
@@ -24,7 +23,6 @@
 		extra_class: _extra_class ~ ' kui-select--grouped',
 		placeholder: _placeholder,
 		is_disabled: _is_disabled,
-		is_invalid: _is_invalid,
 		error_message: _error_message
 	}
 %}
