@@ -81,8 +81,8 @@
   padding: var(--kui-space-sm) var(--kui-space-md);
   background: oklch(10% 0.005 255 / 0.65);
   color: oklch(95% 0.004 255);
-  font-size: $font-size-sm;
-  line-height: $line-height-base;
+  font-size: var(--kui-font-size-sm);
+  line-height: var(--kui-line-height-base);
   margin: 0;
   pointer-events: none;
 }

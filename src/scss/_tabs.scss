@@ -34,7 +34,7 @@
 
 .kui-tabs {
   width: 100%;
-  font-family: $font-family-base;
+  font-family: var(--kui-font-family);
   color: var(--foreground);
 }
 
@@ -59,13 +59,13 @@
   align-items: center;
   gap: var(--kui-space-xs);
   padding: var(--kui-space-xs) var(--kui-space-sm);
-  border: $border-width solid transparent;
+  border: var(--kui-border-width) solid transparent;
   border-radius: var(--kui-radius-sm);
   background: none;
   cursor: pointer;
   font-family: inherit;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  font-size: var(--kui-font-size-sm);
+  font-weight: var(--kui-font-weight-semibold);
   color: var(--muted-foreground);
   white-space: nowrap;
   transition:
@@ -150,8 +150,8 @@
 // ── Panel content ─────────────────────────────────────────────────────────────
 
 .kui-tabs__content {
-  font-size: $font-size-base;
-  line-height: $line-height-base;
+  font-size: var(--kui-font-size-base);
+  line-height: var(--kui-line-height-base);
   color: var(--foreground);
 }
 
@@ -166,7 +166,7 @@
     padding: 0;
     gap: 0;
     border-radius: 0;
-    border-bottom: $border-width solid var(--border);
+    border-bottom: var(--kui-border-width) solid var(--border);
     margin-bottom: var(--kui-space-md);
   }
 
@@ -204,7 +204,7 @@
     padding: var(--kui-space-xs) 0;
     border-radius: 0;
     border-bottom: none;
-    border-right: $border-width solid var(--border);
+    border-right: var(--kui-border-width) solid var(--border);
     padding-right: var(--kui-space-sm);
     margin-bottom: 0;
     gap: var(--kui-space-xs);

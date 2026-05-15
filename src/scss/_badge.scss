@@ -31,11 +31,11 @@
   align-items: center;
   gap: var(--kui-space-xs);
   padding: 3px 10px;
-  border: $border-width solid transparent;
+  border: var(--kui-border-width) solid transparent;
   border-radius: 999px;
-  font-family: $font-family-base;
+  font-family: var(--kui-font-family);
   font-size: 0.75rem;
-  font-weight: $font-weight-semibold;
+  font-weight: var(--kui-font-weight-semibold);
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;

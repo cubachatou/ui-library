@@ -45,11 +45,11 @@
   // Reset browser <dialog> defaults.
   margin: auto;
   padding: 0;
-  border: $border-width solid var(--border);
+  border: var(--kui-border-width) solid var(--border);
   border-radius: var(--kui-radius-lg);
   background-color: var(--background);
   color: var(--foreground);
-  font-family: $font-family-base;
+  font-family: var(--kui-font-family);
   box-shadow: none; // Flat-by-default rule: no shadows.
   max-width: min(90vw, 32rem);
   width: 100%;
@@ -157,25 +157,25 @@
 
   &__title {
     margin: 0 0 var(--kui-space-xs);
-    font-size: $font-size-lg;
-    font-weight: $font-weight-semibold;
+    font-size: var(--kui-font-size-lg);
+    font-weight: var(--kui-font-weight-semibold);
     line-height: 1.3;
     color: var(--foreground);
   }
 
   &__description {
     margin: 0;
-    font-size: $font-size-sm;
+    font-size: var(--kui-font-size-sm);
     color: var(--muted-foreground);
-    line-height: $line-height-base;
+    line-height: var(--kui-line-height-base);
   }
 
   // ── Body ──────────────────────────────────────────────────────────────
   &__body {
     padding: var(--kui-space-md) var(--kui-space-xl);
     color: var(--foreground);
-    font-size: $font-size-base;
-    line-height: $line-height-base;
+    font-size: var(--kui-font-size-base);
+    line-height: var(--kui-line-height-base);
 
     // Scroll variant: body gets scroll.
     &--scroll {
@@ -196,7 +196,7 @@
     justify-content: flex-end;
     gap: var(--kui-space-sm);
     padding: var(--kui-space-sm) var(--kui-space-xl) var(--kui-space-lg);
-    border-top: $border-width solid var(--border);
+    border-top: var(--kui-border-width) solid var(--border);
     flex-shrink: 0;
 
     // Block text snippets wrap content in .doc-prose which adds margin.
