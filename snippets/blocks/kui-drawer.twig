@@ -2,15 +2,15 @@
   kui-drawer.twig — Variant dispatcher.
 
   Reads the `style` field and delegates to the matching variant template.
-  The Left and Right variants force their side-modifier class rather than
-  reading the `side` blueprint field (they are dedicated style choices).
+  The left and right styles use inline embeds (they force a side-modifier
+  class rather than reading the side blueprint field). All other styles use
+  file-based includes so project overrides in site/snippets/ui/ work
+  automatically.
 #}
 
 {% set style = block.style.value %}
 
-{% if style == 'scrollable' %}
-	{% include '@ui/kui-drawer_scrollable.twig' %}
-{% elseif style == 'left' %}
+{% if style == 'left' %}
 	{# Force left side — ignore the side field. #}
 	{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'drawer-' ~ block.id %}
 	{% set _extra_class = block.css_classes.value ~ ' kui-drawer--side-left' %}
@@ -67,7 +67,8 @@
 		{% endblock %}
 	{% endembed %}
 {% elseif style == 'responsive' %}
-	{% include '@ui/kui-drawer_responsive.twig' %}
+	{% include ['@ui/kui-drawer_responsive.twig', '@ui/kui-drawer_default.twig'] %}
 {% else %}
-	{% include '@ui/kui-drawer_default.twig' %}
+	{# File-based variants (scrollable, default, and any project additions). #}
+	{% include ['@ui/kui-drawer_' ~ style ~ '.twig', '@ui/kui-drawer_default.twig'] %}
 {% endif %}

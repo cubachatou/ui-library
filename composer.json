@@ -2,7 +2,7 @@
 	"name": "oleksii/kui",
 	"description": "Flexible UI component library plugin for Kirby CMS with Twig template inheritance and Vite asset pipeline.",
 	"type": "kirby-plugin",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"license": "MIT",
 	"keywords": [
 		"kirby",

@@ -1,15 +1,16 @@
 {#
-  accordion.twig — Block dispatcher.
+  kui-accordion.twig — Block entry point.
 
-  Reads the `style` field set in the Panel and delegates rendering to the
-  appropriate variant template. Each variant independently embeds the shared
-  base layout (_accordion_base.twig) and overrides only its own blocks.
+  Accordion uses a single template that covers all four built-in examples:
+    Default   — one item open at a time (standard behaviour)
+    Multiple  — allow_multiple_open toggle field
+    Disabled  — disabled toggle on individual items
+    Borders   — css_classes: accordion--bordered
 
-  Adding a new visual variant requires only:
-    1. A new option value in blueprints/blocks/accordion.yml (style field).
-    2. A new embed file in snippets/blocks/  (e.g. accordion_minimal.twig).
-    3. A new branch in the conditional below.
-  No changes to _accordion_base.twig, accordion.js, or _accordion.scss.
+  To add a project-level variant without modifying this plugin:
+    1. Place your template at  site/snippets/ui/kui-accordion_myvariant.twig
+    2. Use {% include ['@ui/kui-accordion_myvariant.twig', '@ui/kui-accordion_default.twig'] %}
+    3. The @ui namespace searches site/snippets/ui/ first, then the plugin.
 #}
 
-{% include '@ui/kui-accordion_simple.twig' %}
+{% include '@ui/kui-accordion_default.twig' %}

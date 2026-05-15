@@ -1,0 +1,33 @@
+{#
+  kui-accordion_default.twig — Default accordion variant.
+
+  Supports all four built-in examples via blueprint fields alone:
+    Default   — renders as-is (one item open at a time)
+    Multiple  — allow_multiple_open: true in the Settings tab
+    Disabled  — disabled: true on individual items
+    Borders   — css_classes: accordion--bordered in the Settings tab
+
+  To create a custom variant: copy this file into site/snippets/ui/,
+  rename it, and override any {% block %} regions. The base template,
+  accordion.js, and _accordion.scss need no changes.
+#}
+
+{% set _wrapper_id = block.html_id.isNotEmpty ? block.html_id.value : 'accordion' %}
+{% set _extra_class = block.css_classes.value %}
+
+{% embed '@ui/_kui-accordion_base.twig'
+	with {
+		items: block.items.toStructure(),
+		wrapper_id: _wrapper_id,
+		extra_class: _extra_class
+	}
+%}
+	{% block item_header %}
+		{{- item.title.value -}}
+	{% endblock %}
+	{% block item_content %}
+		<div class="kui-accordion__content">
+			{{ item.text.toBlocks|raw }}
+		</div>
+	{% endblock %}
+{% endembed %}

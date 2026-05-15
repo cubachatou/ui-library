@@ -2,16 +2,9 @@
   kui-tabs.twig — Variant dispatcher.
 
   Reads the `style` field and delegates to the matching variant template.
-  Adding a new variant: add its value to the blueprint style select and a new
-  branch here. No other files need changing.
+  Project overrides: place a file at site/snippets/ui/kui-tabs_<style>.twig
+  and it will be used automatically without modifying this plugin.
 #}
 
-{% set style = block.style.value %}
-
-{% if style == 'line' %}
-	{% include '@ui/kui-tabs_line.twig' %}
-{% elseif style == 'vertical' %}
-	{% include '@ui/kui-tabs_vertical.twig' %}
-{% else %}
-	{% include '@ui/kui-tabs_default.twig' %}
-{% endif %}
+{% set style = block.style.value ? : 'default' %}
+{% include ['@ui/kui-tabs_' ~ style ~ '.twig', '@ui/kui-tabs_default.twig'] %}

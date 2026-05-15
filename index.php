@@ -92,9 +92,8 @@ Kirby::plugin('kui/components', [
         'blocks/kui-accordion'        => __DIR__ . '/snippets/blocks/kui-accordion.twig',
         'blocks/kui-button'           => __DIR__ . '/snippets/blocks/kui-button.twig',
 
-        // Variants — loaded by kui-accordion.twig via {% include '@ui/…' %}.
-        'blocks/kui-accordion_simple' => __DIR__ . '/snippets/blocks/kui-accordion_simple.twig',
-        'blocks/kui-accordion_rich'   => __DIR__ . '/snippets/blocks/kui-accordion_rich.twig',
+        // Default variant — the single accordion template covering all built-in examples.
+        'blocks/kui-accordion_default' => __DIR__ . '/snippets/blocks/kui-accordion_default.twig',
 
         // Base layout — loaded by variants via {% embed '@ui/…' %}.
         // The underscore prefix signals it is internal (not a public block).

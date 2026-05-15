@@ -23,7 +23,8 @@
 //   [disabled]                trigger           — whole widget disabled
 // =============================================================================
 
-@use 'tokens' as *;
+
+@layer kui {
 
 // ── Animation keyframes ───────────────────────────────────────────────────────
 @keyframes _kui-select-in {
@@ -59,7 +60,7 @@
   position: relative;
   display: inline-flex;
   flex-direction: column;
-  gap: $space-xs;
+  gap: var(--kui-space-xs);
   width: 100%;
   max-width: 15rem;
   font-family: $font-family-base;
@@ -74,20 +75,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: $space-sm;
+  gap: var(--kui-space-sm);
   width: 100%;
-  padding: $space-sm $space-md;
+  padding: var(--kui-space-sm) var(--kui-space-md);
   background-color: var(--background);
   border: $border-width solid var(--input);
-  border-radius: $border-radius-sm;
+  border-radius: var(--kui-radius-sm);
   cursor: pointer;
   font-family: inherit;
   font-size: $font-size-base;
   color: var(--foreground);
   text-align: left;
   transition:
-    border-color $transition-fast,
-    box-shadow $transition-fast;
+    border-color var(--kui-transition-fast),
+    box-shadow var(--kui-transition-fast);
 
   &:hover:not([disabled]) {
     border-color: var(--muted-foreground);
@@ -138,7 +139,7 @@
   width: 1rem;
   height: 1rem;
   color: var(--muted-foreground);
-  transition: transform $transition-base;
+  transition: transform var(--kui-transition-base);
 
   // Rotate when open.
   .kui-select[data-state='open'] & {
@@ -156,7 +157,7 @@
 // ── Content (listbox popup) ───────────────────────────────────────────────────
 .kui-select__content {
   position: absolute;
-  top: calc(100% + $space-xs);
+  top: calc(100% + var(--kui-space-xs));
   left: 0;
   right: 0;
   z-index: 50;
@@ -164,8 +165,8 @@
   overflow-y: auto;
   background-color: var(--background);
   border: $border-width solid var(--border);
-  border-radius: $border-radius-sm;
-  padding: $space-xs 0;
+  border-radius: var(--kui-radius-sm);
+  padding: var(--kui-space-xs) 0;
   transform-origin: top center;
 
   // Hidden state — toggled by JS after the closing animation completes.
@@ -194,7 +195,7 @@
 
 // ── Group label ───────────────────────────────────────────────────────────────
 .kui-select__label {
-  padding: $space-xs $space-md;
+  padding: var(--kui-space-xs) var(--kui-space-md);
   font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
   color: var(--muted-foreground);
@@ -207,11 +208,11 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: $space-sm $space-md;
+  padding: var(--kui-space-sm) var(--kui-space-md);
   font-size: $font-size-base;
   color: var(--foreground);
   user-select: none;
-  transition: background-color $transition-fast;
+  transition: background-color var(--kui-transition-fast);
 
   // Hover / keyboard-focus highlight (managed via aria-activedescendant in JS,
   // but we also handle the pointer hover here for mouse users).
@@ -241,6 +242,7 @@
 // ── Separator ─────────────────────────────────────────────────────────────────
 .kui-select__separator {
   height: $border-width;
-  margin: $space-xs 0;
+  margin: var(--kui-space-xs) 0;
   background-color: var(--border);
+}
 }

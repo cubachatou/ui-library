@@ -21,14 +21,15 @@
 //   - Anchor badges gain hover + focus states only; no button-state variants.
 // =============================================================================
 
-@use 'tokens' as *;
+
+@layer kui {
 
 // ── Base ──────────────────────────────────────────────────────────────────────
 
 .kui-badge {
   display: inline-flex;
   align-items: center;
-  gap: $space-xs;
+  gap: var(--kui-space-xs);
   padding: 3px 10px;
   border: $border-width solid transparent;
   border-radius: 999px;
@@ -43,7 +44,7 @@
   // Anchor state — hover + focus only; the badge never behaves like a button
   &[href] {
     cursor: pointer;
-    transition: opacity $transition-fast;
+    transition: opacity var(--kui-transition-fast);
 
     &:hover {
       opacity: 0.8;
@@ -130,4 +131,5 @@
   to {
     transform: rotate(360deg);
   }
+}
 }

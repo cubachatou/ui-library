@@ -27,7 +27,6 @@
 //     Never as a background fill.
 // =============================================================================
 
-@use 'tokens' as *;
 
 $_btn-height-xs: 1.5rem; //  24px
 $_btn-height-sm: 1.75rem; //  28px
@@ -35,17 +34,19 @@ $_btn-height-default: 2rem; //  32px
 $_btn-height-lg: 2.25rem; //  36px
 $_btn-icon-size: 2rem; //  32px square — matches default height
 
+@layer kui {
+
 // ── Base ──────────────────────────────────────────────────────────────────────
 
 .kui-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: $space-xs;
+  gap: var(--kui-space-xs);
   height: $_btn-height-default;
   padding: 0 0.625rem;
   border: $border-width solid transparent;
-  border-radius: $border-radius-sm;
+  border-radius: var(--kui-radius-sm);
   cursor: pointer;
   font-family: $font-family-base;
   font-size: $font-size-sm;
@@ -54,10 +55,10 @@ $_btn-icon-size: 2rem; //  32px square — matches default height
   text-decoration: none;
   white-space: nowrap;
   transition:
-    background-color $transition-base,
-    border-color $transition-base,
-    color $transition-base,
-    opacity $transition-base;
+    background-color var(--kui-transition-base),
+    border-color var(--kui-transition-base),
+    color var(--kui-transition-base),
+    opacity var(--kui-transition-base);
 
   &:focus-visible {
     outline: 2px solid var(--ring);
@@ -213,4 +214,5 @@ $_btn-icon-size: 2rem; //  32px square — matches default height
       }
     }
   }
+}
 }

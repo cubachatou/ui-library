@@ -1,8 +1,9 @@
 // =============================================================================
 // main.scss — UI library entry point.
 //
-// Import one partial per component. Tokens are imported by each partial
-// individually so partials remain self-contained and portable.
+// _root.scss outputs the :root block with all design tokens as CSS custom
+// properties (spacing, radii, transitions, typography, borders, colours).
+// Component partials contain only BEM rules — no token imports needed.
 // =============================================================================
 
 @use 'root';

@@ -19,7 +19,7 @@
 //   {{ snippet('kui/assets', ['js' => false]) | raw }}
 $js = $js ?? true;
 
-$port      = option('kui.components.vite.port', 5174);
+$port      = (int) option('kui.components.vite.port', 5174);
 $devOrigin = 'http://localhost:' . $port;
 
 if (option('debug')) {
